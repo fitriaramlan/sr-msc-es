@@ -1,0 +1,3 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+10,x1 + x1 + exp(exp(-2.3871188 + x1/x0) - 3.0020776) + sin(x1) + 5.7027984,7,,synthetic,4,False,True,54,2
+10,x1 + x1 + exp(exp(-2.3871188 + x1/x0) - 3.0020776) + sin(x1) + 5.7027984,7,,synthetic,53,False,True,54,2

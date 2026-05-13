@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+20,x1 + exp(1.69121287838048*sqrt(0.349625778048466*x1 + 1)) + 0.21759893*log(x0 + exp(sqrt(exp(0.567568802672801*x1*exp(-1.31404447300968*sin(2.62512743040025*x0**2*(0.617198419107969*exp(1.0548456*x1) + 1)**2))))))**2,8,,synthetic,46,True,False,54,1

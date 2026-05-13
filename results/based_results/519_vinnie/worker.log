@@ -1,0 +1,15 @@
+START: 519_vinnie
+START: 519_vinnie
+START: 519_vinnie
+Completed '519_vinnie' in 3h 36m 36s
+
+============================================================
+DATASET: 519_vinnie
+Original size: 380 samples
+Features: 2
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 3h 36m 36s
+============================================================

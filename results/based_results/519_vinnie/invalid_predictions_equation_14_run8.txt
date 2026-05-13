@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 14
+Equation: x1 + exp(1.69121287838048*sqrt(0.349625778048466*x1 + 1)) + 0.21759893*log(5.91016234154922*exp(x1 - cos(0.9414587*exp(exp(x1)/x0))))
+Run: 8
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 54
+    NaN at indices: [15]
+    Infinity at indices: []
+================================================================================
