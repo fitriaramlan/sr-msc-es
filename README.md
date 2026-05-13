@@ -4,7 +4,7 @@ Code for the paper:
 
 > **Extending Model Selection Criteria with Extrapolation and Sensitivity Penalties for Symbolic Regression**  
 > Fitria Wulandari Ramlan, Colm O'Riordan, James McDermott  
-> EuroGP 2026 — Lecture Notes in Computer Science, vol 16521, pp. 189–204  
+> EuroGP 2026, Lecture Notes in Computer Science, vol 16521, pp. 189–204  
 > DOI: [10.1007/978-3-032-23005-8_12](https://doi.org/10.1007/978-3-032-23005-8_12)
 
 ---
@@ -14,9 +14,9 @@ Code for the paper:
 Model selection criteria like AIC, BIC, and MDL pick symbolic regression models based on training error and complexity. But they do not say anything about how a model behaves on data it has never seen, particularly in regions with little or no training data (extrapolation).
 
 We extend these criteria by adding three penalty terms:
-1. **Extrapolation divergence** — how much the model's prediction range shifts when moving from dense to sparse data regions
-2. **Interpolation sensitivity** — how much predictions change when inputs are slightly perturbed in dense regions
-3. **Extrapolation sensitivity** — the same, but in sparse regions
+1. **Extrapolation divergence**: how much the model's prediction range shifts when moving from dense to sparse data regions
+2. **Interpolation sensitivity**: how much predictions change when inputs are slightly perturbed in dense regions
+3. **Extrapolation sensitivity**: the same, but in sparse regions
 
 We test these extended (hybrid) criteria across 20 regression datasets from the [PMLB repository](https://github.com/EpistasisLab/pmlb), using [PySR](https://github.com/MilesCranmer/PySR) to see whether they pick better-generalising models than the standard criteria alone.
 
@@ -94,7 +94,7 @@ Summarises results at the dataset level. Categorises each dataset by how much th
 ## Requirements
 
 - Python ≥ 3.10
-- [PySR](https://github.com/MilesCranmer/PySR) — requires Julia
+- [PySR](https://github.com/MilesCranmer/PySR), requires Julia
 - scikit-learn, NumPy, pandas, matplotlib, seaborn
 - JAX (CPU only)
 - SymPy, SciPy
@@ -110,12 +110,12 @@ See the [PySR installation guide](https://astroautomata.com/PySR/api/) for Julia
 
 ## Running the code
 
-### Step 1 — Run experiments
+### Run experiments
 
 Edit the top of `main.py` to set:
-- `DATASETS` — which `.npy` files to run
-- `DATA_DIR` / `OUT_ROOT` — where data lives and where results go
-- `NUM_RUNS`, `BANDWIDTHS`, `USE_CV` — experimental settings
+- `DATASETS`, which `.npy` files to run
+- `DATA_DIR` / `OUT_ROOT`, where data lives and where results go
+- `NUM_RUNS`, `BANDWIDTHS`, `USE_CV`, experimental settings
 
 Then:
 
@@ -125,7 +125,7 @@ python main.py --workers 4
 python main.py --workers 4 --start-run 10 --end-run 30  # resume from run 10
 ```
 
-### Step 2 — Run hybrid analysis
+### Run hybrid analysis
 
 ```bash
 cd hybrid_code
@@ -200,4 +200,4 @@ All 20 datasets come from [PMLB](https://github.com/EpistasisLab/pmlb), stored a
 
 ## Acknowledgement
 
-This work was supported by Taighde Éireann – Research Ireland, Grant No. 18/CRT/6223.
+This work was supported by Taighde Éireann, Research Ireland, Grant No. 18/CRT/6223.
