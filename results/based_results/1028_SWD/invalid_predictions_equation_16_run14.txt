@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 16
+Equation: 0.30292413*x2 + log(7.63914786142377*exp(0.0809367891388041*x4 + 0.0809367891388041*x9 + 0.0809367891388041*(x6 + exp(x8))*exp(0.8219367/x9) - 0.0107300070467261/cos(x1))) + 1.6808059
+Run: 14
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 6 invalid values (NaN: 0, Infinity: 6) out of 144
+    NaN at indices: []
+    Infinity at indices: [2, 64, 66, 74, 87, 138]
+================================================================================

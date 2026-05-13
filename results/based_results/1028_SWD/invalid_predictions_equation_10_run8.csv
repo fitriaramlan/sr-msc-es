@@ -1,0 +1,3 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+10,1.78859148494004*sqrt(0.312591872705087*x2 - 0.312591872705087*(x6 + exp(x8))/(x9 - 1.8011835) + 1) + 1.6370764,8,,synthetic,49,True,False,144,2
+10,1.78859148494004*sqrt(0.312591872705087*x2 - 0.312591872705087*(x6 + exp(x8))/(x9 - 1.8011835) + 1) + 1.6370764,8,,synthetic,50,True,False,144,2

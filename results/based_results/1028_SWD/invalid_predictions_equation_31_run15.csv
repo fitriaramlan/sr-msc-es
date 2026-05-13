@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+31,0.967436141378205*exp(0.42346564*x9 - (x2 - 0.17563511)*(0.790332960410191*(x9 + sin(x2) - 0.96772414)*exp(-x2 + x4 - exp(1.56134460499231*x9 - 1.56134460499231*(x4 - 0.50504725)/x2) + 2.87635/(-1.2536751*x2 - x4 - 1.43388069)) - 0.51084465*cos(log(x2**2))) + sin(0.2901616*x8 - 0.6404736)) + 3.1989033,15,,synthetic,62,False,True,144,1

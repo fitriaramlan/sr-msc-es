@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 12
+Equation: 0.21232261*x2 + 0.21232261*x4 + 0.21232261*x9 + 0.21232261*(x7 + x8)*sqrt(sin(x9**2)) + 3.7860055
+Run: 1
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 6 invalid values (NaN: 6, Infinity: 0) out of 144
+    NaN at indices: [2, 30, 67, 92, 101, 139]
+    Infinity at indices: []
+================================================================================

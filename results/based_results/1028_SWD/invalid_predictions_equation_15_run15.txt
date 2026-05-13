@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 15
+Equation: exp((-(x2*(-0.35022923) - (-(-0.044975083)*exp(x8*0.4117835)*exp(exp(-(-1.5233049)*x9 - 0.5754658)) - 0.5754658)) - 0.5754658)*exp(x2*(-0.48574096))) + 3.28101
+Run: 15
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 0, Infinity: 1) out of 144
+    NaN at indices: []
+    Infinity at indices: [40]
+================================================================================

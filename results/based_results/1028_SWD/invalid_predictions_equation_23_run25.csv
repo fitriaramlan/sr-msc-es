@@ -1,0 +1,4 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+23,log(-x5 + x6 + x7 + (x2 - x5 + (0.8723905 - log(14.2881939447104*(-x5 + 0.514346354251319*sin(x5 + 2.2601979) - 0.188619343074232)**4))**2 + sin(x8) - cos(x9 + 0.8922386) - cos(cos(x1)))**2),25,,synthetic,18,True,False,144,3
+23,log(-x5 + x6 + x7 + (x2 - x5 + (0.8723905 - log(14.2881939447104*(-x5 + 0.514346354251319*sin(x5 + 2.2601979) - 0.188619343074232)**4))**2 + sin(x8) - cos(x9 + 0.8922386) - cos(cos(x1)))**2),25,,synthetic,76,True,False,144,3
+23,log(-x5 + x6 + x7 + (x2 - x5 + (0.8723905 - log(14.2881939447104*(-x5 + 0.514346354251319*sin(x5 + 2.2601979) - 0.188619343074232)**4))**2 + sin(x8) - cos(x9 + 0.8922386) - cos(cos(x1)))**2),25,,synthetic,91,True,False,144,3

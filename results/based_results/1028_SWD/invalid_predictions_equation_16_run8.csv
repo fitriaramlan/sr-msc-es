@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+16,1.78859148494004*sqrt(0.312591872705087*x2 + 1 - 0.312591872705087*(x4 + x6 + exp(x8) + 1.8978956*cos(x1))/(x9 - 2.1731522)) + 1.6567576,8,,synthetic,50,True,False,144,1

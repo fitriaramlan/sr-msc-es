@@ -1,0 +1,3 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+26,0.12219802*exp(x1)*cos(x2 + 0.98049974) + 0.12219802*exp(x9) + 0.889738134899698*exp((x2 + 0.3871841*x4 + exp(cos(cos(exp(0.897427729586096*exp(-exp(x7 + x9 + (x2 + x9)**2*exp(-x4)))) + 1.2132549))))**(1/4)) + cos(cos(4.547747*x8)),7,,synthetic,108,True,False,144,2
+26,0.12219802*exp(x1)*cos(x2 + 0.98049974) + 0.12219802*exp(x9) + 0.889738134899698*exp((x2 + 0.3871841*x4 + exp(cos(cos(exp(0.897427729586096*exp(-exp(x7 + x9 + (x2 + x9)**2*exp(-x4)))) + 1.2132549))))**(1/4)) + cos(cos(4.547747*x8)),7,,synthetic,112,True,False,144,2

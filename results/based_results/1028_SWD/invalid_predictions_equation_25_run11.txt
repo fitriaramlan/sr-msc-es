@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 25
+Equation: 0.11094695*x3 + exp(sin(0.2475776*x2 + sqrt(sin(0.24620569*x1 + 0.16217321*x7 + 1.88790097128729*sin(x5 + 1.5733588)) + 0.48169568*sin(0.5378272*x4 + 0.5378272*x5 + 0.5378272*x9*exp(x1) - 0.178550735096704)))) + 1.7610718
+Run: 11
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 14 invalid values (NaN: 14, Infinity: 0) out of 144
+    NaN at indices: [16, 19, 20, 41, 52, 53, 55, 56, 72, 90, 113, 116, 124, 127]
+    Infinity at indices: []
+================================================================================

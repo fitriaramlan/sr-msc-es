@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+17,0.122231774*x3 + exp(1.28972684039147*(0.361417392272318*x2 + 0.120861192590654*x4 + 1)**(1/4)) + 0.122231774*log(exp(1.84097707753247*(x9 + cos(x7 - 0.68427515))*sqrt(0.295055176203115*x8 + 0.295055176203115*x9 + 1)) + 1.0114083),7,,synthetic,128,True,False,144,1

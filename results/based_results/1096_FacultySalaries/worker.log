@@ -1,0 +1,13 @@
+START: 1096_FacultySalaries
+Completed '1096_FacultySalaries' in 1h 15m 37s
+
+============================================================
+DATASET: 1096_FacultySalaries
+Original size: 50 samples
+Features: 4
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 1h 15m 37s
+============================================================

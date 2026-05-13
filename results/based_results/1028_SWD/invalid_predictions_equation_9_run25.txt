@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 9
+Equation: log(x4 + 25.7528502487944*(0.25*x2 + (-x5 + sin(2.19947742927211*exp(x5))/2 - 0.194191215)**2)**2) + 0.110692255
+Run: 25
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 144
+    NaN at indices: [133]
+    Infinity at indices: []
+================================================================================

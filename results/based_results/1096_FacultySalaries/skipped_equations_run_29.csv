@@ -1,0 +1,2 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+29,,9,sqrt(x1/x2)*(x1 + 3*x3) + 43.03274,0,0,1,0

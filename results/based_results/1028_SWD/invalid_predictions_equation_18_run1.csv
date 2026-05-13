@@ -1,0 +1,7 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+18,0.2993437*x2 + 0.14967185*x4 + 0.14967185*x9 + 0.14967185*(x7 + x8 + cos(x7))*sqrt(sin(x9**2)) + 3.77541347928057,1,,synthetic,2,True,False,144,6
+18,0.2993437*x2 + 0.14967185*x4 + 0.14967185*x9 + 0.14967185*(x7 + x8 + cos(x7))*sqrt(sin(x9**2)) + 3.77541347928057,1,,synthetic,30,True,False,144,6
+18,0.2993437*x2 + 0.14967185*x4 + 0.14967185*x9 + 0.14967185*(x7 + x8 + cos(x7))*sqrt(sin(x9**2)) + 3.77541347928057,1,,synthetic,67,True,False,144,6
+18,0.2993437*x2 + 0.14967185*x4 + 0.14967185*x9 + 0.14967185*(x7 + x8 + cos(x7))*sqrt(sin(x9**2)) + 3.77541347928057,1,,synthetic,92,True,False,144,6
+18,0.2993437*x2 + 0.14967185*x4 + 0.14967185*x9 + 0.14967185*(x7 + x8 + cos(x7))*sqrt(sin(x9**2)) + 3.77541347928057,1,,synthetic,101,True,False,144,6
+18,0.2993437*x2 + 0.14967185*x4 + 0.14967185*x9 + 0.14967185*(x7 + x8 + cos(x7))*sqrt(sin(x9**2)) + 3.77541347928057,1,,synthetic,139,True,False,144,6

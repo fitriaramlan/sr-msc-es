@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,total_predictions,nan_count
+42,8.15403445707748*x1 - 2*x2 - x3 + log(x1 - x2 + 0.66522324) - sin(8.58809485756211*x2) - sin(0.640085085230209*exp(x2)*exp(-x3**2)/cos(0.796890088615772*exp(x3)) + (x2*(x3 - 0.107441455) - 0.14552106)/x3) + cos(0.742287592454263*exp(x2)) + 43.6233583,20,,test_ext,2,5,1

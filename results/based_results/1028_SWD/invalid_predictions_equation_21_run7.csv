@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+21,0.12219802*exp(x9) + 0.889738134899698*exp((x2 + exp(0.122504205*x4 + cos(cos(sqrt(exp(0.897427729586096*exp(-1.81198911422383*exp(3.65076051000102*x7)))) + 1.2132549))))**(1/4)) + 0.12219802*cos(x2 + 1.254596) + cos(cos(4.547747*x8)),7,,synthetic,112,True,False,144,1

@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 23
+Equation: 1.50984986008543*sqrt(1 - 0.438664484223125*(x4 + x7 + x9 + sin(x8) + cos(x4))/(x9 - 2.4798844)) + cos(2.42790329365874*sqrt(0.339287005806482*x2 + 0.114585702887272*x6 + 1))**2 + 1.6016608
+Run: 8
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 144
+    NaN at indices: [96]
+    Infinity at indices: []
+================================================================================

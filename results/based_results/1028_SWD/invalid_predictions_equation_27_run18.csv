@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+27,exp(1.197633736562*(0.486075705065133*x2 + 0.486075705065133*(x4 + x8)*(0.13693222*sin(x9) + 0.269459727586038) + 0.0218059617795504*exp(2.76775619389239*x9) + 0.650660812420504 + (0.53713204574904*exp(-x3 + 0.635742879591639*x4**2*x5**2*(0.2810286 - x6)**2 - x7) + 1)**(-1/4))**(1/4)),18,,synthetic,72,True,False,144,1

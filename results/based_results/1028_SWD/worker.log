@@ -1,0 +1,14 @@
+START: 1028_SWD
+START: 1028_SWD
+Completed '1028_SWD' in 3h 29m 31s
+
+============================================================
+DATASET: 1028_SWD
+Original size: 1000 samples
+Features: 10
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 3h 29m 31s
+============================================================

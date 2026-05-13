@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 20
+Equation: 0.122231774*x3 + exp(1.28972684039147*(0.361417392272318*x2 + 0.120861192590654*x4 + 1)**(1/4)) + 0.122231774*log(exp(1.84097707106698*(x9 + cos(x7 - 0.68427515))*sqrt(0.295055178275576*x7 + 0.295055178275576*x8 + 0.295055178275576*x9 + 1)) + cos(x1))
+Run: 7
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 11 invalid values (NaN: 11, Infinity: 0) out of 95
+    NaN at indices: [4, 13, 24, 56, 60, 65, 67, 70, 72, 73, 75]
+    Infinity at indices: []
+  synthetic: 2 invalid values (NaN: 2, Infinity: 0) out of 144
+    NaN at indices: [103, 107]
+    Infinity at indices: []
+================================================================================

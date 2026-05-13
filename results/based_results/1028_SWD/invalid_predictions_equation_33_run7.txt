@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 33
+Equation: 0.126002508715076*exp(x9) + 0.889738134899698*exp((x2 + exp(0.122504205*x4 + cos(cos(exp(sqrt(exp(-2.43406548870897*exp(x7 + sqrt((x2 + x9)**2*exp(-x5))) + sin(2*x1 - 0.0642780573931258)))) + 1.1202604))))**(1/4)) + 0.126002508715076*cos(x2 + cos(exp(x3) + sin(x1 + cos(x4))) + 0.98049974) + cos(sqrt(cos(4.547747*x8)))
+Run: 7
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 33 invalid values (NaN: 33, Infinity: 0) out of 144
+    NaN at indices: [1, 2, 8, 15, 16, 23, 25, 36, 38, 57, 59, 61, 83, 85, 89, 94, 97, 98, 102, 103, 107, 112, 113, 114, 118, 119, 120, 128, 129, 132, 134, 136, 141]
+    Infinity at indices: []
+================================================================================

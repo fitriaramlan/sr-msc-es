@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 8
+Equation: 0.33940008*x2 + 1.78688460609707*exp(cos(sqrt(cos(x5/x9)))) + 0.37566927
+Run: 9
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 37 invalid values (NaN: 37, Infinity: 0) out of 144
+    NaN at indices: [2, 10, 16, 17, 18, 19, 21, 22, 23, 25, 26, 30, 40, 51, 58, 61, 62, 64, 65, 72, 74, 82, 88, 90, 92, 93, 94, 95, 96, 99, 100, 102, 103, 115, 116, 135, 136]
+    Infinity at indices: []
+================================================================================

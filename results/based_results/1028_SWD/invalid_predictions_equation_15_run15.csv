@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+15,exp((-(x2*(-0.35022923) - (-(-0.044975083)*exp(x8*0.4117835)*exp(exp(-(-1.5233049)*x9 - 0.5754658)) - 0.5754658)) - 0.5754658)*exp(x2*(-0.48574096))) + 3.28101,15,,synthetic,40,False,True,144,1

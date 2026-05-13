@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+23,1.50984986008543*sqrt(1 - 0.438664484223125*(x4 + x7 + x9 + sin(x8) + cos(x4))/(x9 - 2.4798844)) + cos(2.42790329365874*sqrt(0.339287005806482*x2 + 0.114585702887272*x6 + 1))**2 + 1.6016608,8,,synthetic,96,True,False,144,1
