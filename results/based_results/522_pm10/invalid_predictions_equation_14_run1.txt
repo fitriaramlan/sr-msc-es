@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 14
+Equation: 0.393147569920303*x0 + log(-2*x4 + 6.04114263357696*exp(2*cos(sin(1.29563389890818*sqrt(0.595710692387389*cos(3.35030956797699*(1 + 0.00228267161419207/sin(x1**2*x3**2))**(1/4)) + 1))))) - 0.425150166227338*sin(x2)
+Run: 1
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 1 invalid values (NaN: 1, Infinity: 0) out of 50
+    NaN at indices: [3]
+    Infinity at indices: []
+================================================================================

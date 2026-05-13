@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 4
+Equation: exp((-x2 + exp(exp(sin(x0))))**(1/8))
+Run: 28
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 3 invalid values (NaN: 3, Infinity: 0) out of 50
+    NaN at indices: [35, 45, 46]
+    Infinity at indices: []
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 72
+    NaN at indices: [7]
+    Infinity at indices: []
+================================================================================

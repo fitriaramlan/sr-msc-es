@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 7
+Equation: exp(1.07923139328919*sqrt(sqrt(-0.234856402698412*x2 + 0.737125984118473*sin(sin(x0)) + 1) + 0.177672174807055))
+Run: 3
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 1 invalid values (NaN: 1, Infinity: 0) out of 50
+    NaN at indices: [46]
+    Infinity at indices: []
+================================================================================

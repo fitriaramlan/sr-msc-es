@@ -1,0 +1,28 @@
+START: 522_pm10
+START: 522_pm10
+START: 522_pm10
+Completed '522_pm10' in 2h 1m 52s
+
+============================================================
+DATASET: 522_pm10
+Original size: 500 samples
+Features: 7
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 31
+Bandwidths tested: [0.3]
+Total time: 2h 1m 52s
+============================================================
+START: 522_pm10
+Completed '522_pm10' in 2h 11m 40s
+
+============================================================
+DATASET: 522_pm10
+Original size: 500 samples
+Features: 7
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 31
+Bandwidths tested: [0.3]
+Total time: 2h 11m 40s
+============================================================

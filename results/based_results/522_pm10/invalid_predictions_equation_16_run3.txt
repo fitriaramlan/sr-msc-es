@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 16
+Equation: 1.02277025491812*exp(1.17848619982766*(0.518444169784244*x0 - 0.165181984272478*x2 + 0.518444169784244*sin(cos(x6)) + 0.518444169784244*sin(cos(x0 + cos(x2**2) + 2.0137458)) - 0.272533475940043*cos(2.49902*x3) + 1)**(1/4))
+Run: 3
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 1 invalid values (NaN: 1, Infinity: 0) out of 50
+    NaN at indices: [46]
+    Infinity at indices: []
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 72
+    NaN at indices: [6]
+    Infinity at indices: []
+================================================================================

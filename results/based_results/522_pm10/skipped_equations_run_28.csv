@@ -1,0 +1,3 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+28,,4,exp((-x2 + exp(exp(sin(x0))))**(1/8)),0,0,3,1
+28,,5,exp((-x2 + exp(exp(sin(sin(x0)))))**(1/8)),0,0,2,1

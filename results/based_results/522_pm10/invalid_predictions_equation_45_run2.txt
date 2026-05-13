@@ -1,0 +1,20 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 45
+Equation: log(-2.6982695188095*x2 - 2.6982695188095*x6**2*exp(2*sin(cos(exp(cos(cos(cos(x3 + 1.4544044))**4)) - sin(cos(exp(x1 + sin(exp(-0.446873709512516*x1))) - 3.1597254)/(4.20836168055547*(-0.487465036448395*x4**2 + 0.487465036448395*x6 + 1)**2 + 0.19651602))))) + 14.8990658026134*exp(0.5559922*x0) + exp(exp(cos(exp(cos(exp(2.72052003012001*(0.606281108662611*exp(cos(exp(sin(x1/((x4 - x6 - 0.27850628)**4 + 1.7729229) + exp(cos(cos(x3 + 0.11612935)**4)) + 0.19651602)**2))) - 1)**2))) - 1.6227388))) - 2.6982695188095*cos(exp(cos(sin(x4**2 - x6 + 1.19563702)**2)**2)) + 0.06291772)
+Run: 2
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_int: 1 invalid values (NaN: 1, Infinity: 0) out of 90
+    NaN at indices: [72]
+    Infinity at indices: []
+  test_ext: 1 invalid values (NaN: 1, Infinity: 0) out of 50
+    NaN at indices: [22]
+    Infinity at indices: []
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 72
+    NaN at indices: [31]
+    Infinity at indices: []
+================================================================================

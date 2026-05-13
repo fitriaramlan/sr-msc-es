@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 53
+Equation: 0.49899438*x0 + sin((0.11697644*x5 + sin(0.48862560477115*x2*exp(-0.5184255*x1 + x3 + 0.5184255*x5) + 0.49551317*exp(sin(exp(cos(sin(cos(2.23474614616422*x3*exp(x3 - 0.5184255*x5))))**2/cos(cos((x5 + 1.1411198)*sin((x2*exp(-0.5184255*x1 + x3 + 0.5184255*exp(sin(x0/sqrt(cos(0.4165767*x0 + 0.4165767*x4 + 0.21965976915291))))) + exp(exp(-0.49551317*sin(cos(cos((x4 + 1.1411198)*sin(exp(x0) + 0.026999773)**2))/sin(cos(cos(2.49027472394758*x3*exp(0.86794966*x3 + 0.86794966*x5))))**2))))**2))))))))*(-0.39604664*exp(cos(-0.81688374*x1 + x3 + 0.0389187209559346)) - 0.39604664*sin(exp(cos(exp(exp(sin(x0/sqrt(cos(cos(x4 + 0.601709433371305*exp(4*x0))))))))/cos(sin((x0 + exp(cos(x1)))**2))))) + 0.16432607) + 3.5375705
+Run: 23
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 1 invalid values (NaN: 1, Infinity: 0) out of 50
+    NaN at indices: [29]
+    Infinity at indices: []
+  synthetic: 3 invalid values (NaN: 3, Infinity: 0) out of 72
+    NaN at indices: [15, 18, 54]
+    Infinity at indices: []
+================================================================================

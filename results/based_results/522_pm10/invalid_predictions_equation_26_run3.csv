@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+26,1.1677145238267*exp(1.14365686028625*(-0.0906326008926368*x2 + 0.584543778013096*sin(x0 + cos(x0 + sin(x1 - sin(x0) + cos(x6) + 0.273822366575296*exp(-x3)) + cos(x2**2) + 1.3801233)) - 0.30728043046049*cos(2.5865974*x3) + 1)**(1/4)),3,,test_ext,46,True,False,50,1

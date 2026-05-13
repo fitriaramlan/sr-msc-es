@@ -1,0 +1,5 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+4,exp((-x2 + exp(exp(sin(x0))))**(1/8)),28,,test_ext,35,True,False,50,3
+4,exp((-x2 + exp(exp(sin(x0))))**(1/8)),28,,test_ext,45,True,False,50,3
+4,exp((-x2 + exp(exp(sin(x0))))**(1/8)),28,,test_ext,46,True,False,50,3
+4,exp((-x2 + exp(exp(sin(x0))))**(1/8)),28,,synthetic,7,True,False,72,1

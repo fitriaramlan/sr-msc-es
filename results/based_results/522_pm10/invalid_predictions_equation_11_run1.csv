@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+11,0.393147569920303*x0 + log(6.04114263357696*exp(2*cos(sin(1.29563389890818*sqrt(0.595710692387389*cos(3.35030956797699*(1 + 0.00228267161419207/sin(x1**2*x3**2))**(1/4)) + 1))))) - 0.425150166227338*sin(x2),1,,test_ext,3,True,False,50,1
