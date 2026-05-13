@@ -1,0 +1,7 @@
+NaN STATISTICS REPORT
+============================================================
+Total rows in dataset: 475
+
+
+Rows with ANY NaN: 0 (0.00%)
+Rows without NaN: 475 (100.00%)
