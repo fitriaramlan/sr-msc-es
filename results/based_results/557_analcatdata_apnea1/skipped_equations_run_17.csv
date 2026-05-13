@@ -1,0 +1,4 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+17,,6,exp(sin(x0 - 1*(-1.1104491))**2/(x1 - 0.39361507)**2),0,0,0,1
+17,,7,exp(sin(-x0 + sin(-0.66075736))**2/(x1 - 0.39361507)**2),0,0,0,1
+17,,8,x0*exp(sin(x0 - 1*(-0.9910383))**2/(x1 - 0.39361507)**2),0,0,0,1

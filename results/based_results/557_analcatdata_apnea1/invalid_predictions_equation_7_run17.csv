@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+7,exp(sin(-x0 + sin(-0.66075736))**2/(x1 - 0.39361507)**2),17,,synthetic,44,False,True,68,1

@@ -1,0 +1,15 @@
+START: 557_analcatdata_apnea1
+START: 557_analcatdata_apnea1
+START: 557_analcatdata_apnea1
+Completed '557_analcatdata_apnea1' in 2h 51m 30s
+
+============================================================
+DATASET: 557_analcatdata_apnea1
+Original size: 475 samples
+Features: 3
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 2h 51m 30s
+============================================================
