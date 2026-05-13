@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 18
+Equation: -5.39787828509799*x0 + 1.361146342549*x1 - 4.036731942549*x3 - 1.3377928*log(1.1092873*x1 + x2 - 1.1320714133289*x3 + 0.915891*sin(exp(x0)) + 6.139555) + 2.45473374301548
+Run: 22
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 2 invalid values (NaN: 2, Infinity: 0) out of 385
+    NaN at indices: [57, 341]
+    Infinity at indices: []
+================================================================================

@@ -1,0 +1,13 @@
+START: 529_pollen
+Completed '529_pollen' in 7h 39m 19s
+
+============================================================
+DATASET: 529_pollen
+Original size: 3848 samples
+Features: 4
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 7h 39m 19s
+============================================================
