@@ -84,7 +84,7 @@ Reads the per-dataset results and produces cross-dataset summaries: clamping thr
 Takes the (0, 0, 0) setting (i.e. no penalty, just the base criterion) as a baseline and measures how much each other setting improves or worsens the Spearman correlation. Ranks all settings and optionally produces plots.
 
 **`calculate_best_per_run.py`**  
-For each dataset and each run, picks the (metric, lambda combination) with the highest Spearman correlation. Saves results in wide format — one row per run with separate columns for SVP/MVP and interpolation/extrapolation targets.
+For each dataset and each run, picks the (metric, lambda combination) with the highest Spearman correlation. Saves results in wide format, one row per run with separate columns for SVP/MVP and interpolation/extrapolation targets.
 
 **`aggregate_extrapolation_performance.py`**  
 Summarises results at the dataset level. Categorises each dataset by how much the best hybrid setting improves over the baseline, and generates LaTeX tables.
