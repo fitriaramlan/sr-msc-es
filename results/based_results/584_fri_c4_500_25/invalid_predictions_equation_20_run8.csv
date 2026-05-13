@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+20,-4.0093446*(-0.07791882*x1 - 0.120483981471582)*(x4 - 1.59402661278876*cos(3.0174384*log(x0*(x1 - 0.28976128) + 0.73674836)) - 1.82454176438406)*sin(sin(x1)) + 0.16146809,8,,synthetic,38,True,False,72,1

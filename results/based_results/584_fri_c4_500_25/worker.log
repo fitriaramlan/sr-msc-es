@@ -1,0 +1,15 @@
+START: 584_fri_c4_500_25
+START: 584_fri_c4_500_25
+START: 584_fri_c4_500_25
+Completed '584_fri_c4_500_25' in 0h 8m 13s
+
+============================================================
+DATASET: 584_fri_c4_500_25
+Original size: 500 samples
+Features: 25
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 0h 8m 13s
+============================================================

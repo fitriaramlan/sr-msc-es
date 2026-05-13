@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 22
+Equation: -(x4 - 1.59402661278876*cos(3.0174384*log(x0*(x1 - 0.28976128) + 0.73674836)) - 1.82454176438406)*sin(sin(sin(4.0093446*x1*log(0.895658808528418 - 0.07791882*x1)))) + 0.162178100308467
+Run: 8
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 72
+    NaN at indices: [38]
+    Infinity at indices: []
+================================================================================
