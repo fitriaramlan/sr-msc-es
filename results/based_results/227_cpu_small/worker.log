@@ -1,0 +1,16 @@
+START: 227_cpu_small
+START: 227_cpu_small
+START: 227_cpu_small
+START: 227_cpu_small
+Completed '227_cpu_small' in 0h 33m 42s
+
+============================================================
+DATASET: 227_cpu_small
+Original size: 8192 samples
+Features: 12
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 0h 33m 42s
+============================================================
