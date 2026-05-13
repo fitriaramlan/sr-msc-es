@@ -1,0 +1,13 @@
+START: 561_cpu
+Completed '561_cpu' in 4h 6m 4s
+
+============================================================
+DATASET: 561_cpu
+Original size: 209 samples
+Features: 7
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 4h 6m 4s
+============================================================

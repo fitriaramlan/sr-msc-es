@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 77
+Equation: -1.67218582746928*x0*x4 - x0 - x1 - x4 + x5 + x6 + 3.5711775*(-x3*(cos(x4 + 0.9413113) + 0.99678224) + exp(exp(cos(sin(1.14237794891895*exp(x0))))*cos(1.5632563*x2 - 1.5632563*x4))*cos(exp(exp(x3))))*sin(x3) - (x3*cos(x2)**2 - sin(sin(x2)))*((-x3*cos(exp(exp(x3)) + cos(cos(x1) + 0.5567311)) + exp(cos(exp(x5))))*exp(cos((x3 - x4)**2*exp(2*sin(cos(x0 + 0.13311201)))))*sin(x3) + log(x5 + cos(x4)) + 17.469305) + 17.3807727858452*(x3 + 0.239864213828009*x5 + 0.0825889739122242)**2 + exp(x2 + x3) + exp(1.8879645*exp(cos(0.63424313777099*exp(-0.6823123*x3 - 0.239864213828009*x4)))) + 3.5711775*sin(x5 + cos(x5)) + cos(3.0236945*x3*x5/x2) - 0.4028869
+Run: 22
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 3 invalid values (NaN: 3, Infinity: 0) out of 21
+    NaN at indices: [4, 5, 15]
+    Infinity at indices: []
+  synthetic: 3 invalid values (NaN: 3, Infinity: 0) out of 30
+    NaN at indices: [1, 15, 19]
+    Infinity at indices: []
+================================================================================
