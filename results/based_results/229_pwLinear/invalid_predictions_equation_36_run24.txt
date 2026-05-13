@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 36
+Equation: -2.26309424542346*x0 + x1 + x2 + x5 + (x4 - 0.85620767)/cos(sin(x8)) + sin(x6) + sin(-0.978888028228781*x0 + 0.978888028228781*x4 + 0.978888028228781*sin(x0*(x1 - 5.30837778640589*sin(x2)**2)/x9) + 8.48825818915699) - sin(x0 + (0.8106199 - x0)**2 - (x0 - x1)*cos(x9)**(1/4) - sin(x5) + 0.004421548) + 0.87623876 - 0.7977791*x2/x0 - 0.32649264/x0
+Run: 24
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 4 invalid values (NaN: 4, Infinity: 0) out of 29
+    NaN at indices: [2, 7, 10, 21]
+    Infinity at indices: []
+================================================================================

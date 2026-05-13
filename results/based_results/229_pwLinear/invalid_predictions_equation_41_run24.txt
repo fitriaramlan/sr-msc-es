@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 41
+Equation: -2.58548565256774*x0 + x1 + x2 + x5 + (x4 - 0.85620767)/cos(sin(x8)) + sin(x6) + sin(-0.978888028228781*x0 + x4 + 0.978888028228781*sin(x0*(x1 - (x0 - x7)**2 + sqrt(sqrt(cos(x9)) - 0.46141174)/sin((x0 + x3)**2*cos(x9)**(1/4))**2 - 5.30837778640589*sin(x2)**2 - 0.050384816)/x9) + 8.48825818915699) - sin(x1 + (0.60550004 - x0)**2 - sin(x5) - 0.003901896) + 0.958832 - 0.7977791*x2/x0 - 0.32649264/x0
+Run: 24
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 7 invalid values (NaN: 7, Infinity: 0) out of 29
+    NaN at indices: [2, 7, 10, 12, 16, 21, 25]
+    Infinity at indices: []
+================================================================================

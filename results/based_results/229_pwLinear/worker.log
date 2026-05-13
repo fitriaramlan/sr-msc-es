@@ -1,0 +1,13 @@
+START: 229_pwLinear
+Completed '229_pwLinear' in 3h 37m 19s
+
+============================================================
+DATASET: 229_pwLinear
+Original size: 200 samples
+Features: 10
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 3h 37m 19s
+============================================================
