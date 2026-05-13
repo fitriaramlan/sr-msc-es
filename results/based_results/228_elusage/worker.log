@@ -1,0 +1,13 @@
+START: 228_elusage
+Completed '228_elusage' in 1h 46m 30s
+
+============================================================
+DATASET: 228_elusage
+Original size: 55 samples
+Features: 2
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 1h 46m 30s
+============================================================

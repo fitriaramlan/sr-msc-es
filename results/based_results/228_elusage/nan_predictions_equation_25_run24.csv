@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,total_predictions,nan_count
+25,6.42926074904664*x0**2*(x0 - 0.19120788028084)**2 - 2*x1*(-x1**4 + x1) + 48.0107592108269*sqrt(x1*(x1 - 0.08135612)) - 3.8994795674986*exp(x1) + 0.7877291,24,,synthetic,5,10,1
