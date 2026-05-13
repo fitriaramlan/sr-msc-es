@@ -1,0 +1,2 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+12,,11,-0.0630137*x0 + exp(exp(-0.2992731*x0 - 0.11154872*x0/x1)) + 0.03150685*sin(x0 - log(x1 - 0.11154872)) + 0.5050897,0,0,7,3

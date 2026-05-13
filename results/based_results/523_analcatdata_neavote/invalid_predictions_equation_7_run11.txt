@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 7
+Equation: exp(x1*(0.471906567504794*(0.59169906 - x1)**2/(x0**2*x1**2)) + exp(x1*x0*(-2.6274707))) - 1*0.055950686
+Run: 11
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 6 invalid values (NaN: 0, Infinity: 6) out of 8
+    NaN at indices: []
+    Infinity at indices: [0, 1, 2, 3, 5, 6]
+================================================================================

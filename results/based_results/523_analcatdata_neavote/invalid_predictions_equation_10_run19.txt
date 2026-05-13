@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 10
+Equation: 5.16636443611044*(-x0 + 0.439954213085136*x1*(x1**3*(0.43243694 - x1)*(x0 + 1.55259699105625*x1**2 - 1.8086721)*(-0.8351505*x0*(x0 - 0.15186903) + 0.980049226416038*x1**(1/4) + x1 - 0.89012647) + x1 + 0.069405675) + 0.439954213085136*exp((1.0573474 - 0.4809269*x1)*(x1 - 0.89091384)))**2
+Run: 19
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 7 invalid values (NaN: 7, Infinity: 0) out of 8
+    NaN at indices: [0, 1, 2, 3, 5, 6, 7]
+    Infinity at indices: []
+  synthetic: 3 invalid values (NaN: 3, Infinity: 0) out of 14
+    NaN at indices: [7, 8, 13]
+    Infinity at indices: []
+================================================================================

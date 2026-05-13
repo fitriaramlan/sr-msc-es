@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+9,0.5139933*x1 + sqrt(exp(1.43586125948372*exp(-x0)) - sqrt(exp(0.222984924637521*exp(0.7198842*x0)))) + 1.1053987,20,,synthetic,5,True,False,14,1

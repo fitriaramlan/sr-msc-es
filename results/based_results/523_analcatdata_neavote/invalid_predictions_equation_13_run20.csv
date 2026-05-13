@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+13,sqrt(-x0 + (x0*(x0 + 0.16438968) - 1.5639893)/(exp(x0) + 0.124075093987919*exp(x0*(x0 + 0.16438968) - x1)) + exp(1.43586125948372*exp(-x0))) + sin(x1) + 0.9063967,20,,synthetic,5,True,False,14,1

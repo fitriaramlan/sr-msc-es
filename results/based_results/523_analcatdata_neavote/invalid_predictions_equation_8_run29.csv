@@ -1,0 +1,13 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,test_ext,0,True,False,8,7
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,test_ext,1,True,False,8,7
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,test_ext,2,True,False,8,7
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,test_ext,3,True,False,8,7
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,test_ext,5,True,False,8,7
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,test_ext,6,True,False,8,7
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,test_ext,7,True,False,8,7
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,synthetic,2,True,False,14,5
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,synthetic,3,True,False,14,5
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,synthetic,9,True,False,14,5
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,synthetic,11,True,False,14,5
+8,-x0/x1 + x1 + (x0**2*x1 + x1)/log(x1) + sin(x0**2*x1) + 5.4642143,29,,synthetic,12,True,False,14,5

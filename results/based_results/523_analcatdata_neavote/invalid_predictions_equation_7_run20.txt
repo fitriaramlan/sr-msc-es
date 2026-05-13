@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 7
+Equation: 0.5139933*x1 + sqrt(exp(1.43586125948372*exp(-x0)) - sqrt(exp(0.222984927386813*exp(x0 - x1)))) + 1.1053987
+Run: 20
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 6 invalid values (NaN: 6, Infinity: 0) out of 8
+    NaN at indices: [0, 1, 2, 3, 5, 6]
+    Infinity at indices: []
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 14
+    NaN at indices: [10]
+    Infinity at indices: []
+================================================================================

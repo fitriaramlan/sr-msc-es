@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 14
+Equation: 1.34154382336173*sqrt(-0.555635866546333*x0*(1.6393278 + 0.16438968/(x0*(2*x0 + 0.75480324) + x0 + exp(x0) + sqrt(exp(1.43586125948372*exp(0.063155904*x0 + x1))) + 0.3069)) - 0.555635866546333*x0 + 0.555635866546333*exp(1.43586125948372*exp(-x0)) + 1) + 0.9063967
+Run: 20
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 3 invalid values (NaN: 3, Infinity: 0) out of 14
+    NaN at indices: [0, 8, 11]
+    Infinity at indices: []
+================================================================================

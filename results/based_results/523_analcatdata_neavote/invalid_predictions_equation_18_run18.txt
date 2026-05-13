@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 18
+Equation: sin(sin(exp(-sin(x0 + 2.20675650031579*x1 - 1.70003681578873*exp(-sqrt(x1 + exp(sin(x0 + x1/(1.505463 - x0))) + sqrt(cos(cos(21.0099813168741*x0*(x0 + 3.3321002)/sin(1.04794694522194*sqrt(1 - 0.91058692062086*cos(0.9157083*x1 - 0.4935432))) + sin(x1 - 0.7271775) + 0.58055896))) - 0.2658728) + sin(0.2067565*x0 - sin(x0)))**(1/4) + sin(x0) + cos(sin(x0 - x1 + 2.0042188) - cos(1.2067565*x0 + 1.0701271*sin(x0) - sin(x0 + sin(x0))))**(1/4) - 0.964849380444263))**(1/4))) - 0.069924794 + 3.34262524689722*exp(-0.91058692062086*x0)
+Run: 18
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 2 invalid values (NaN: 2, Infinity: 0) out of 8
+    NaN at indices: [0, 7]
+    Infinity at indices: []
+================================================================================

@@ -1,0 +1,142 @@
+START: 523_analcatdata_neavote
+
+ERROR:
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/datasets/_deepnote_work/main.py", line 97, in run_one_dataset
+    evaluate_models(
+  File "/datasets/_deepnote_work/m1_evaluation.py", line 1367, in evaluate_models
+    mse_test_ext = mean_squared_error(y_test_extrapolation, yhat_test_ext_pysr) if len(y_test_extrapolation) > 0 else np.nan
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 442, in mean_squared_error
+    y_type, y_true, y_pred, multioutput = _check_reg_targets(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 102, in _check_reg_targets
+    y_pred = check_array(y_pred, ensure_2d=False, dtype=dtype)
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 899, in check_array
+    _assert_all_finite(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 146, in _assert_all_finite
+    raise ValueError(msg_err)
+ValueError: Input contains infinity or a value too large for dtype('float64').
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/datasets/_deepnote_work/main.py", line 184, in main
+    print(fut.result(), flush=True)
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+ValueError: Input contains infinity or a value too large for dtype('float64').
+
+START: 523_analcatdata_neavote
+
+ERROR:
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/datasets/_deepnote_work/main.py", line 97, in run_one_dataset
+    evaluate_models(
+  File "/datasets/_deepnote_work/m1_evaluation.py", line 1367, in evaluate_models
+    mse_test_ext = mean_squared_error(y_test_extrapolation, yhat_test_ext_pysr) if len(y_test_extrapolation) > 0 else np.nan
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 442, in mean_squared_error
+    y_type, y_true, y_pred, multioutput = _check_reg_targets(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 102, in _check_reg_targets
+    y_pred = check_array(y_pred, ensure_2d=False, dtype=dtype)
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 899, in check_array
+    _assert_all_finite(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 146, in _assert_all_finite
+    raise ValueError(msg_err)
+ValueError: Input contains infinity or a value too large for dtype('float64').
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/datasets/_deepnote_work/main.py", line 184, in main
+    print(fut.result(), flush=True)
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+ValueError: Input contains infinity or a value too large for dtype('float64').
+
+START: 523_analcatdata_neavote
+
+ERROR:
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/datasets/_deepnote_work/main.py", line 97, in run_one_dataset
+    evaluate_models(
+  File "/datasets/_deepnote_work/m1_evaluation.py", line 1367, in evaluate_models
+    mse_test_ext = mean_squared_error(y_test_extrapolation, yhat_test_ext_pysr) if len(y_test_extrapolation) > 0 else np.nan
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 442, in mean_squared_error
+    y_type, y_true, y_pred, multioutput = _check_reg_targets(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 102, in _check_reg_targets
+    y_pred = check_array(y_pred, ensure_2d=False, dtype=dtype)
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 899, in check_array
+    _assert_all_finite(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 146, in _assert_all_finite
+    raise ValueError(msg_err)
+ValueError: Input contains infinity or a value too large for dtype('float64').
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/datasets/_deepnote_work/main.py", line 184, in main
+    print(fut.result(), flush=True)
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+ValueError: Input contains infinity or a value too large for dtype('float64').
+
+START: 523_analcatdata_neavote
+START: 523_analcatdata_neavote
+Completed '523_analcatdata_neavote' in 2h 6m 20s
+
+============================================================
+DATASET: 523_analcatdata_neavote
+Original size: 100 samples
+Features: 2
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 2h 6m 20s
+============================================================
+START: 523_analcatdata_neavote
+Completed '523_analcatdata_neavote' in 2h 14m 33s
+
+============================================================
+DATASET: 523_analcatdata_neavote
+Original size: 100 samples
+Features: 2
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 2h 14m 33s
+============================================================
+START: 523_analcatdata_neavote
+Completed '523_analcatdata_neavote' in 1h 20m 22s
+
+============================================================
+DATASET: 523_analcatdata_neavote
+Original size: 100 samples
+Features: 2
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 1h 20m 22s
+============================================================

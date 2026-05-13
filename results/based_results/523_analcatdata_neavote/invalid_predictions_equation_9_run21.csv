@@ -1,0 +1,8 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,21,,test_ext,0,True,False,8,7
+9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,21,,test_ext,1,True,False,8,7
+9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,21,,test_ext,2,True,False,8,7
+9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,21,,test_ext,3,True,False,8,7
+9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,21,,test_ext,5,True,False,8,7
+9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,21,,test_ext,6,True,False,8,7
+9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,21,,test_ext,7,True,False,8,7

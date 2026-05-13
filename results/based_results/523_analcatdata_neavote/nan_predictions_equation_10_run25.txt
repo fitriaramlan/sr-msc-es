@@ -1,0 +1,15 @@
+================================================================================
+NaN PREDICTIONS REPORT
+================================================================================
+
+NaN DETECTED in predictions for equation 10
+Equation: -x0 + 1.12226146686055*sqrt(0.793984267042952*cos((0.1422129*x1 + sqrt(2)*sqrt(x1 + cos(x0)/2 - 0.4423065) + cos(x0))**(1/4))**(1/4) + 1) + exp((x0 - 0.087601356)**4)
+Run: 25
+Fold: N/A
+
+NaN counts per prediction type:
+  test_ext: 7 NaN values out of 8
+    NaN at indices: [0, 1, 2, 3, 5, 6, 7]
+  synthetic: 9 NaN values out of 14
+    NaN at indices: [0, 1, 2, 3, 4, 5, 9, 10, 13]
+================================================================================

@@ -1,0 +1,7 @@
+equation_index,equation,run,fold,prediction_type,row_index,total_predictions,nan_count
+12,(x0 + sqrt(sin(cos(0.863765986952585*x1))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),1,,test_ext,1,8,6
+12,(x0 + sqrt(sin(cos(0.863765986952585*x1))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),1,,test_ext,2,8,6
+12,(x0 + sqrt(sin(cos(0.863765986952585*x1))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),1,,test_ext,3,8,6
+12,(x0 + sqrt(sin(cos(0.863765986952585*x1))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),1,,test_ext,5,8,6
+12,(x0 + sqrt(sin(cos(0.863765986952585*x1))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),1,,test_ext,6,8,6
+12,(x0 + sqrt(sin(cos(0.863765986952585*x1))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),1,,test_ext,7,8,6

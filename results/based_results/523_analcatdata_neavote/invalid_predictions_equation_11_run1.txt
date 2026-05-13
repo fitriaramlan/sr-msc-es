@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 11
+Equation: (x0 + sqrt(sin(cos(1.19739532510762*x1 - 0.5460203))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0)
+Run: 1
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 7 invalid values (NaN: 7, Infinity: 0) out of 8
+    NaN at indices: [0, 1, 2, 3, 5, 6, 7]
+    Infinity at indices: []
+================================================================================

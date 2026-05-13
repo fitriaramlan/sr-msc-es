@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 5
+Equation: exp(exp(sin(-1.0969292)/x0)) - 1*(-0.48442554)
+Run: 10
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 1 invalid values (NaN: 0, Infinity: 1) out of 8
+    NaN at indices: []
+    Infinity at indices: [4]
+================================================================================

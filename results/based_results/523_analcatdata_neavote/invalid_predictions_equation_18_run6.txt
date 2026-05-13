@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 18
+Equation: x1 + 0.0220209519580927*x1/((x0 + cos(0.20500296*x0*x1) - 1.1105715)*cos(1.1581533*x0)) + exp(1.19512428366276*(-x0 + x1)**2*(0.914731141308216*cos(x0)**5.7524714 + 1)**2) + 0.00472174855166466
+Run: 6
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 2 invalid values (NaN: 2, Infinity: 0) out of 14
+    NaN at indices: [6, 9]
+    Infinity at indices: []
+================================================================================

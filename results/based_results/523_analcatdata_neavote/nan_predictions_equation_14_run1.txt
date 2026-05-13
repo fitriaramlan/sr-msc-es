@@ -1,0 +1,15 @@
+================================================================================
+NaN PREDICTIONS REPORT
+================================================================================
+
+NaN DETECTED in predictions for equation 14
+Equation: (x0 + sqrt(sin(cos(sqrt(x1)/(x0*sqrt(0.5280097*x0**2 + x0 + x1 + exp(sqrt(cos(x0))) + cos(x1**4)/(0.7089157 - sin(x1))))))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0)
+Run: 1
+Fold: N/A
+
+NaN counts per prediction type:
+  test_ext: 8 NaN values out of 8
+    NaN at indices: [0, 1, 2, 3, 4, 5, 6, 7]
+  synthetic: 1 NaN values out of 14
+    NaN at indices: [9]
+================================================================================

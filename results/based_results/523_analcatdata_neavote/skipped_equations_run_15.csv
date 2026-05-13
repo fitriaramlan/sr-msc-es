@@ -1,0 +1,2 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+15,,8,-x0 - x0 + x0/1.2679725 + x0 - x0/x1 - 0.053815212*exp(0.53190565/(0.9999964 + 1.0735397 - (-0.034134146)*1.6859037/(x0 + 0.83625823))) + cos(cos(exp(-x1/0.9472731 - (0.83363634 + 0.00116513992314932*exp(-4*sin(x0))) + exp(x1/x1) + 3.00956699516971/x0**4))) + 1.1190895 + 3.770846,0,0,1,0

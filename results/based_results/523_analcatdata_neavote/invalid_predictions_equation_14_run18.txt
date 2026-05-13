@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 14
+Equation: sin((-sin(sin(1.3708549*sin(x0 + x1 - 0.729471806242951*x1*exp(-3.0549297*x1) - 1.33888172))))**(1/4)) - 0.10532907 + 3.34262524689722*exp(-0.91058692062086*x0)
+Run: 18
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 2 invalid values (NaN: 2, Infinity: 0) out of 8
+    NaN at indices: [0, 7]
+    Infinity at indices: []
+================================================================================

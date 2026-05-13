@@ -1,0 +1,4 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+1,,11,(x0 + sqrt(sin(cos(1.19739532510762*x1 - 0.5460203))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),0,0,7,0
+1,,12,(x0 + sqrt(sin(cos(0.863765986952585*x1))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),0,0,6,0
+1,,14,(x0 + sqrt(sin(cos(sqrt(x1)/(x0*sqrt(0.5280097*x0**2 + x0 + x1 + exp(sqrt(cos(x0))) + cos(x1**4)/(0.7089157 - sin(x1))))))))*sin(x0**2 + 1.0789299) + 1.102407*exp(-2*x0),0,0,8,1

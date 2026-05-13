@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 17
+Equation: sqrt((1.119151 - x0)/sin(x1) + exp(-x0)*sin(1.05534859695058*(-sqrt(x1 + sin((1.119151 - x0)/x1) + 0.25538304*exp(-x0**2)) - 0.25538304)*exp(-cos(-0.9935296*exp(x1) + cos(cos(0.46678805*exp(-1.0959227*x0*x1)/(-x0 + x1))) + 0.29261887)))) + 1.26965820458446*exp(-1.0065125387306*x0 + cos(cos(x1*cos(x1*sin(exp(x1)))))) + 0.38014865
+Run: 18
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 8 invalid values (NaN: 8, Infinity: 0) out of 8
+    NaN at indices: [0, 1, 2, 3, 4, 5, 6, 7]
+    Infinity at indices: []
+  synthetic: 9 invalid values (NaN: 9, Infinity: 0) out of 14
+    NaN at indices: [0, 1, 2, 3, 6, 7, 10, 12, 13]
+    Infinity at indices: []
+================================================================================

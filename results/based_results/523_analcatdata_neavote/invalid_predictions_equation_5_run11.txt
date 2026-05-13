@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 5
+Equation: exp(exp(x0*(0.007038957 + cos(0.262534125199106))*(-2.6274707)*x1) + 0.20073886)
+Run: 11
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 6 invalid values (NaN: 0, Infinity: 6) out of 8
+    NaN at indices: []
+    Infinity at indices: [0, 1, 2, 3, 5, 6]
+================================================================================

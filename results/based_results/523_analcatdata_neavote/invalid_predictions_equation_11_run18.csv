@@ -1,0 +1,10 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,test_ext,1,True,False,8,6
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,test_ext,2,True,False,8,6
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,test_ext,3,True,False,8,6
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,test_ext,5,True,False,8,6
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,test_ext,6,True,False,8,6
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,test_ext,7,True,False,8,6
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,synthetic,1,True,False,14,3
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,synthetic,8,True,False,14,3
+11,-sin(sqrt(sin(sin(-x0 + x1 + 1.3708549)))) + 1.283393406 + 3.34262524689722*exp(-0.91058692062086*x0),18,,synthetic,12,True,False,14,3

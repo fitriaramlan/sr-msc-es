@@ -1,0 +1,2 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+21,,9,3.90060564502401*(1 - 0.506330370136108*sin(1.3496255*x0))**2 + 1.00674276031146*sin(sqrt(exp(sqrt(cos(log(exp(sin(sqrt(x1*sin(sqrt(cos(x0)))))))**2))))) - 0.0382407287907424,0,0,7,0

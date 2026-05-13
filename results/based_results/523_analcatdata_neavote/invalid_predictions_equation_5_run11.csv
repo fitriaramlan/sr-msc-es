@@ -1,0 +1,7 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+5,exp(exp(x0*(0.007038957 + cos(0.262534125199106))*(-2.6274707)*x1) + 0.20073886),11,,test_ext,0,False,True,8,6
+5,exp(exp(x0*(0.007038957 + cos(0.262534125199106))*(-2.6274707)*x1) + 0.20073886),11,,test_ext,1,False,True,8,6
+5,exp(exp(x0*(0.007038957 + cos(0.262534125199106))*(-2.6274707)*x1) + 0.20073886),11,,test_ext,2,False,True,8,6
+5,exp(exp(x0*(0.007038957 + cos(0.262534125199106))*(-2.6274707)*x1) + 0.20073886),11,,test_ext,3,False,True,8,6
+5,exp(exp(x0*(0.007038957 + cos(0.262534125199106))*(-2.6274707)*x1) + 0.20073886),11,,test_ext,5,False,True,8,6
+5,exp(exp(x0*(0.007038957 + cos(0.262534125199106))*(-2.6274707)*x1) + 0.20073886),11,,test_ext,6,False,True,8,6

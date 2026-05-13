@@ -1,0 +1,2 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+16,,14,x1 + (0.65604615 - x0)**4 + sin(2*x0) + cos(0.424619714513798*exp(3.6066124*x1/(x0 + 0.65526668076651*exp(-0.5132191*x0 + cos(x0)/x0) + 0.61789185 - (x1 + 1.3960881)*(x0*exp(exp(-0.12089754*x0)) + 0.807693376332775*x0)/sqrt(x1)))),0,0,7,1
