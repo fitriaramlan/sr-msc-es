@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+26,(cos((x1 + exp(x0*cos(-x0 - 0.5211295*(-0.25638852)) + (x1*exp(cos(x0)) + exp(1.01359 - (x0 + (x1 + exp(-x0 - 0.025920864 + 0.6790999*0.40524524))*exp(2*(x1 + 0.7073037)*(-x3 + (x3 + sin(x4))*exp(1.5087838 - 0.14456481500224*x0**2*exp(4*x1)))))))*0.13151444 - 1*0.026381766) - 1*0.24659581)*(-0.9728277)) - 0.20802335)*1.4013768,4,,synthetic,111,True,False,144,1

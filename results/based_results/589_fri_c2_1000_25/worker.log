@@ -1,0 +1,14 @@
+START: 589_fri_c2_1000_25
+START: 589_fri_c2_1000_25
+Completed '589_fri_c2_1000_25' in 2h 54m 31s
+
+============================================================
+DATASET: 589_fri_c2_1000_25
+Original size: 1000 samples
+Features: 25
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 2h 54m 31s
+============================================================

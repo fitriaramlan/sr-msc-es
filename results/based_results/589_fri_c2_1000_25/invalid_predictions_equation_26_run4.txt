@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 26
+Equation: (cos((x1 + exp(x0*cos(-x0 - 0.5211295*(-0.25638852)) + (x1*exp(cos(x0)) + exp(1.01359 - (x0 + (x1 + exp(-x0 - 0.025920864 + 0.6790999*0.40524524))*exp(2*(x1 + 0.7073037)*(-x3 + (x3 + sin(x4))*exp(1.5087838 - 0.14456481500224*x0**2*exp(4*x1)))))))*0.13151444 - 1*0.026381766) - 1*0.24659581)*(-0.9728277)) - 0.20802335)*1.4013768
+Run: 4
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 144
+    NaN at indices: [111]
+    Infinity at indices: []
+================================================================================

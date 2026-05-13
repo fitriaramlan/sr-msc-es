@@ -1,0 +1,15 @@
+START: 605_fri_c2_250_25
+START: 605_fri_c2_250_25
+START: 605_fri_c2_250_25
+Completed '605_fri_c2_250_25' in 2h 52m 20s
+
+============================================================
+DATASET: 605_fri_c2_250_25
+Original size: 250 samples
+Features: 25
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 2h 52m 20s
+============================================================
