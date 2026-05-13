@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+33,-x0 - x1 - x1 - x1 + 71.83410025*(0.117987139401805*x1 + 1)**2 + (x1 + 1.3136668)*(-x1 - x1 - cos(x0) + cos(-(x0 - 1*0.344579) + exp(x0**2 + x0 + (x0 - x1 + 0.64270127*x1)/exp(0.817935)) + exp((-x0/0.465037 - x1 + 0.81299525)**2) - 1*2.3053784) - cos(exp(x0 - (-(-x0 - x0 - x1 + 53.027332) + 0.5306181 + x1/(x0**4))))) + 1.0597814,21,,synthetic,9,True,False,31,1

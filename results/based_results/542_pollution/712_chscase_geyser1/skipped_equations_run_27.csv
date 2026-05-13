@@ -1,0 +1,3 @@
+run,fold,equation_index,equation,nan_count_train,nan_count_test_int,nan_count_test_ext,nan_count_synthetic
+27,,5,11.284487226694*x1 - log(sin(x1**2)) + 70.48375,0,0,0,6
+27,,13,11.284487226694*x1 - log(sin((x1 + 0.16547567)**2)) + cos(11.284487226694*x1) + 70.34257106,0,0,0,4

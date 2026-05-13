@@ -1,0 +1,6 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+8,64.398891611664*(0.124612268925239*sin(log(x1 + 1.892711)) + 1)**2 + 0.9374877,23,,synthetic,6,True,False,31,5
+8,64.398891611664*(0.124612268925239*sin(log(x1 + 1.892711)) + 1)**2 + 0.9374877,23,,synthetic,12,True,False,31,5
+8,64.398891611664*(0.124612268925239*sin(log(x1 + 1.892711)) + 1)**2 + 0.9374877,23,,synthetic,16,True,False,31,5
+8,64.398891611664*(0.124612268925239*sin(log(x1 + 1.892711)) + 1)**2 + 0.9374877,23,,synthetic,25,True,False,31,5
+8,64.398891611664*(0.124612268925239*sin(log(x1 + 1.892711)) + 1)**2 + 0.9374877,23,,synthetic,26,True,False,31,5

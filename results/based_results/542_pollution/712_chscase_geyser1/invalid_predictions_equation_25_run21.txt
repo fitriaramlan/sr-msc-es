@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 25
+Equation: -x0 - x1 - x1 - x1 + 71.83410025*(0.117987139401805*x1 + 1)**2 + (x1 + 1.3136668)*(-x1 - x1 - cos(x0) + cos(exp(0.216259411369/x0**2)) - cos(exp(x0 - (-(-x0 - x0 - x1 + 53.027332) + 0.5306181 + x1/(x0**4))))) + 0.7429141
+Run: 21
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 31
+    NaN at indices: [9]
+    Infinity at indices: []
+================================================================================

@@ -1,0 +1,17 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 32
+Equation: x0**2 + 5*x1 + exp(x1) - log(2.5969536*x0*x1/(x0**4 - 1.2541691) + 33.61671) - sin(x0 + x1**2 + 0.21131608) + cos(5.89709846243772*x1)**2 - 5.85513243050704*cos(exp(x1)) - 5.85513243050704*cos(exp(cos(x1))) + 72.1505864196012 - 3.79360475592927/(4*(x0 + x1/2 + exp(x1)/2 + cos(exp(cos(x1)))/2 - 0.338573215 + x1/(2*x0*sin(cos(3.56457524177308*exp(cos(sin(x0)**2 - 1.2541691))))))**2 + 0.978701924649023 - 0.24472578/(x1*(1.3519752 - x1))) - 1.07381983/x0
+Run: 8
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_int: 1 invalid values (NaN: 1, Infinity: 0) out of 40
+    NaN at indices: [10]
+    Infinity at indices: []
+  test_ext: 1 invalid values (NaN: 1, Infinity: 0) out of 23
+    NaN at indices: [5]
+    Infinity at indices: []
+================================================================================

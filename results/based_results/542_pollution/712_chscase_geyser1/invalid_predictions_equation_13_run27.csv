@@ -1,0 +1,5 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+13,11.284487226694*x1 - log(sin((x1 + 0.16547567)**2)) + cos(11.284487226694*x1) + 70.34257106,27,,synthetic,8,True,False,31,4
+13,11.284487226694*x1 - log(sin((x1 + 0.16547567)**2)) + cos(11.284487226694*x1) + 70.34257106,27,,synthetic,11,True,False,31,4
+13,11.284487226694*x1 - log(sin((x1 + 0.16547567)**2)) + cos(11.284487226694*x1) + 70.34257106,27,,synthetic,15,True,False,31,4
+13,11.284487226694*x1 - log(sin((x1 + 0.16547567)**2)) + cos(11.284487226694*x1) + 70.34257106,27,,synthetic,19,True,False,31,4

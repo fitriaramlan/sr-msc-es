@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 11
+Equation: -x1 + 73.238217232489*(0.0867936650123342*x1 + 1)**2 - log(sin(x1**2)) - 4.197816
+Run: 19
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 8 invalid values (NaN: 8, Infinity: 0) out of 31
+    NaN at indices: [2, 3, 4, 8, 14, 18, 19, 22]
+    Infinity at indices: []
+================================================================================

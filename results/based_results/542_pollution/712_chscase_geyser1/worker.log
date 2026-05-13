@@ -1,0 +1,13 @@
+START: 712_chscase_geyser1
+Completed '712_chscase_geyser1' in 3h 36m 30s
+
+============================================================
+DATASET: 712_chscase_geyser1
+Original size: 222 samples
+Features: 2
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 3h 36m 30s
+============================================================
