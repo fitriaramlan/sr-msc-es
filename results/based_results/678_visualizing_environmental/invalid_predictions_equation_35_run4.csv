@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+35,9.90191468*sqrt(-0.134339967759721*x1**2*sin(x0 + 13.6237724184455/x0)/cos(x0) + (-0.100990569229991*x0 - 0.100990569229991*x2 + 1 + 0.100990569229991*(0.018716317*x2 + 0.018716317*exp(sin(x0 - 2*x1 - x2 + 7.1564174)**2))*(x1*x2/cos(-x0 + x1 - x2 + cos(x2 + 0.010826505) + 2.0400612) + x2)/(x0*cos(x2)))**2),4,,synthetic,15,True,False,16,1

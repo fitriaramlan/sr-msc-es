@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 41
+Equation: -x0 - x2 + 10.5169624892361*sqrt(1 - 0.00904105997387134*exp(x1 + cos(0.803816154104428*exp(-x0**2*x2)))/(1.1639338 - x1**2)) - sin(x0 - x1 - x1/sin(x2) + exp(cos(-x1 + x2 + cos(x1) + 1.2195864)/cos(x1 - 0.512586))) + sin(191.652719140031*x0 + 191.652719140031*x1 + x1/x2 + 191.652719140031*exp(x1 - cos(x1))) - cos(2*x1 - x2 + 1.40811347) - 0.11407353
+Run: 14
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 16
+    NaN at indices: [11]
+    Infinity at indices: []
+================================================================================

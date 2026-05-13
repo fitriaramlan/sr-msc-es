@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+26,-x0 - x2 + 10.5169624892361*sqrt(1 - 0.00904105997387134*exp(2*x1)/(1.1639338 - x1**2)) - sin(x0 - x1/(-x0 + x2) + 0.9320607) + sin(sin(x1/x2)) - 0.50779023,14,,synthetic,11,True,False,16,1

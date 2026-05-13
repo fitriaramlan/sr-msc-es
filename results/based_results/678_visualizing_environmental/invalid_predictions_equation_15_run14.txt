@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 15
+Equation: -x0 - x2 + 10.4073940061862*sqrt(1 - 0.0233022086435669*exp(sin(0.72709435/x0))/(1.1639338 - x1**2)) - 0.34198985
+Run: 14
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  synthetic: 1 invalid values (NaN: 1, Infinity: 0) out of 16
+    NaN at indices: [7]
+    Infinity at indices: []
+================================================================================

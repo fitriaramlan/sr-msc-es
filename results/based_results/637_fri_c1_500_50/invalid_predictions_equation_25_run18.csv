@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+25,1.3488231*sin(-0.97075591324776*x0 + 1.4541173*x1*log(0.297381558352522*sqrt((0.0431131214532675*x0 + 0.412000506608947*(-0.011295063*x38 + x45)/x45)*exp(-1.6591282*x0 + x1)/(-0.297381558352522*x1 - 1)**2) + 0.15128724) + 0.82005919392091) + 1.3488231*sin(sin(0.33683065*x3)) - 0.17651783810137,18,,synthetic,0,True,False,72,1

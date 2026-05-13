@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+9,-x0 - x2 + 10.4964031934754*sqrt(1 - 0.0453824179610378/(1.1639338 - x1**2)),14,,synthetic,7,True,False,16,1

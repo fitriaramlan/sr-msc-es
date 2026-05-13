@@ -1,0 +1,15 @@
+START: 637_fri_c1_500_50
+START: 637_fri_c1_500_50
+START: 637_fri_c1_500_50
+Completed '637_fri_c1_500_50' in 0h 30m 25s
+
+============================================================
+DATASET: 637_fri_c1_500_50
+Original size: 500 samples
+Features: 50
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 0h 30m 25s
+============================================================
