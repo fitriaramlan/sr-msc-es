@@ -1,0 +1,9 @@
+NaN AND INFINITY STATISTICS REPORT
+============================================================
+Total rows in dataset: 60
+
+
+Rows with ANY NaN: 0 (0.00%)
+Rows with ANY Infinity: 0 (0.00%)
+Rows with ANY NaN or Infinity: 0 (0.00%)
+Rows without NaN or Infinity: 60 (100.00%)

@@ -1,0 +1,2 @@
+equation_index,equation,run,fold,prediction_type,row_index,is_nan,is_inf,total_predictions,invalid_count
+8,(x10 + x8 + exp(x7) + exp(exp(x12)))**2 + 934.0981,22,,test_ext,2,False,True,10,1

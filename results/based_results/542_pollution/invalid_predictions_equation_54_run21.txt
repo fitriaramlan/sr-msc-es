@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 54
+Equation: x1*(x10 + x8 + 3.6351041 + 0.5887561/(x2*(x3 + x8)*(x1 + exp(x3)**(1/4) + sin(x3)**2))) + x2 - x6 + x7*(-4.644406*x10*x9 + 4.644406*x11 + 4.644406*x4 + 4.644406*x8 + 4.644406*exp(x7) + 5.6592333263518) + 12.5092253487551*(x12 - x5)*exp(sqrt(sin(x14**2)) + cos(x12*(x1 - x5) - 0.5887561*x12/x2 + x3 + 1.7282597)) - (-x13 + exp(sqrt(sqrt(exp(x3)) + sin(x8)**2) + cos(x8)) + cos(x3 + 2.98688159064409*(0.578616743768312*x10*x9 - 0.578616743768312*x8 - 1)**2))**2 + 997.06036 - x9**2/x6 + exp(x11 + x4)/x5
+Run: 21
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 3 invalid values (NaN: 3, Infinity: 0) out of 10
+    NaN at indices: [2, 7, 8]
+    Infinity at indices: []
+================================================================================

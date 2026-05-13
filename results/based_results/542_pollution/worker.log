@@ -1,0 +1,136 @@
+START: 542_pollution
+
+ERROR:
+concurrent.futures.process._RemoteTraceback: 
+'''
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/concurrent/futures/process.py", line 392, in wait_result_broken_or_wakeup
+  File "/usr/local/lib/python3.10/multiprocessing/connection.py", line 251, in recv
+  File "<frozen importlib._bootstrap>", line 1027, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1002, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 945, in _find_spec
+  File "<frozen importlib._bootstrap_external>", line 1439, in find_spec
+  File "<frozen importlib._bootstrap_external>", line 1411, in _get_spec
+  File "<frozen importlib._bootstrap_external>", line 1548, in find_spec
+  File "<frozen importlib._bootstrap_external>", line 1591, in _fill_cache
+OSError: [Errno 116] Stale file handle: '/usr/local/lib/python3.10/site-packages'
+'''
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/datasets/_deepnote_work/main.py", line 184, in main
+    print(fut.result(), flush=True)
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+concurrent.futures.process.BrokenProcessPool: A process in the process pool was terminated abruptly while the future was running or pending.
+
+START: 542_pollution
+
+ERROR:
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/datasets/_deepnote_work/main.py", line 97, in run_one_dataset
+    evaluate_models(
+  File "/datasets/_deepnote_work/m1_evaluation.py", line 1367, in evaluate_models
+    mse_test_ext = mean_squared_error(y_test_extrapolation, yhat_test_ext_pysr) if len(y_test_extrapolation) > 0 else np.nan
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 442, in mean_squared_error
+    y_type, y_true, y_pred, multioutput = _check_reg_targets(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 102, in _check_reg_targets
+    y_pred = check_array(y_pred, ensure_2d=False, dtype=dtype)
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 899, in check_array
+    _assert_all_finite(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 146, in _assert_all_finite
+    raise ValueError(msg_err)
+ValueError: Input contains infinity or a value too large for dtype('float64').
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/datasets/_deepnote_work/main.py", line 184, in main
+    print(fut.result(), flush=True)
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+ValueError: Input contains infinity or a value too large for dtype('float64').
+
+START: 542_pollution
+
+ERROR:
+concurrent.futures.process._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/concurrent/futures/process.py", line 246, in _process_worker
+    r = call_item.fn(*call_item.args, **call_item.kwargs)
+  File "/datasets/_deepnote_work/main.py", line 97, in run_one_dataset
+    evaluate_models(
+  File "/datasets/_deepnote_work/m1_evaluation.py", line 1367, in evaluate_models
+    mse_test_ext = mean_squared_error(y_test_extrapolation, yhat_test_ext_pysr) if len(y_test_extrapolation) > 0 else np.nan
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 442, in mean_squared_error
+    y_type, y_true, y_pred, multioutput = _check_reg_targets(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/metrics/_regression.py", line 102, in _check_reg_targets
+    y_pred = check_array(y_pred, ensure_2d=False, dtype=dtype)
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 899, in check_array
+    _assert_all_finite(
+  File "/root/venv/lib/python3.10/site-packages/sklearn/utils/validation.py", line 146, in _assert_all_finite
+    raise ValueError(msg_err)
+ValueError: Input contains infinity or a value too large for dtype('float64').
+"""
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/datasets/_deepnote_work/main.py", line 184, in main
+    print(fut.result(), flush=True)
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 451, in result
+    return self.__get_result()
+  File "/usr/local/lib/python3.10/concurrent/futures/_base.py", line 403, in __get_result
+    raise self._exception
+ValueError: Input contains infinity or a value too large for dtype('float64').
+
+START: 542_pollution
+Completed '542_pollution' in 0h 33m 35s
+
+============================================================
+DATASET: 542_pollution
+Original size: 60 samples
+Features: 15
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 0h 33m 35s
+============================================================
+START: 542_pollution
+START: 542_pollution
+Completed '542_pollution' in 4h 25m 41s
+
+============================================================
+DATASET: 542_pollution
+Original size: 60 samples
+Features: 15
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 4h 25m 41s
+============================================================
+START: 542_pollution
+START: 542_pollution
+Completed '542_pollution' in 2h 48m 24s
+
+============================================================
+DATASET: 542_pollution
+Original size: 60 samples
+Features: 15
+NaN handling method: drop rows (removes samples with any NaN values)
+Cross-validation: No (single split)
+Number of runs: 30
+Bandwidths tested: [0.3]
+Total time: 2h 48m 24s
+============================================================

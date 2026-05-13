@@ -1,0 +1,14 @@
+================================================================================
+NaN/INFINITY PREDICTIONS REPORT
+================================================================================
+
+NaN/Infinity DETECTED in predictions for equation 8
+Equation: (x10 + x8 + exp(x7) + exp(exp(x12)))**2 + 934.0981
+Run: 22
+Fold: N/A
+
+Invalid (NaN/infinity) counts per prediction type:
+  test_ext: 1 invalid values (NaN: 0, Infinity: 1) out of 10
+    NaN at indices: []
+    Infinity at indices: [2]
+================================================================================
