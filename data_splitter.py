@@ -5,21 +5,7 @@ from sklearn.model_selection import train_test_split, KFold
 
 
 def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
-    """
-    Check for NaN values in data and print detailed information about where they appear.
-    Optionally saves the results to CSV and TXT files.
-    
-    Parameters:
-    -----------
-    data : np.ndarray or pd.DataFrame
-        The data to check
-    data_name : str
-        Name/description of the data (e.g., "X_train", "y_test_extrapolation")
-    feature_names : list, optional
-        List of feature names for better reporting
-    output_dir : str, optional
-        Directory to save NaN detection reports. If provided, saves to CSV and TXT files.
-    """
+    # Prints NaN locations; optional CSV/txt under output_dir for debugging splits
     if isinstance(data, pd.DataFrame):
         data_array = data.values
         if feature_names is None:
@@ -36,12 +22,11 @@ def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
         print(f"{'='*80}")
         print(f"Data shape: {data_array.shape}")
         
-        # Prepare data structures for saving
         nan_report_rows = []
         nan_csv_rows = []
         
         if len(data_array.shape) == 1:
-            # 1D array (target)
+            # 1D (target)
             nan_indices = np.where(nan_mask)[0]
             nan_count = len(nan_indices)
             nan_pct = (nan_count / len(data_array)) * 100
@@ -49,13 +34,12 @@ def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
             print(f"NaN count: {nan_count} out of {len(data_array)} ({nan_pct:.2f}%)")
             print(f"NaN at indices: {nan_indices}")
             
-            # Prepare for saving
             nan_report_rows.append(f"NaN DETECTED in: {data_name}")
             nan_report_rows.append(f"Data shape: {data_array.shape}")
             nan_report_rows.append(f"NaN count: {nan_count} out of {len(data_array)} ({nan_pct:.2f}%)")
             nan_report_rows.append(f"NaN at indices: {list(nan_indices)}")
             
-            # CSV format: one row per NaN
+            # one CSV row per NaN
             for idx in nan_indices:
                 nan_csv_rows.append({
                     'data_name': data_name,
@@ -65,7 +49,7 @@ def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
                     'value': None
                 })
         else:
-            # 2D array (features)
+            # 2D (features)
             nan_count_per_col = np.sum(nan_mask, axis=0)
             nan_count_per_row = np.sum(nan_mask, axis=1)
             total_nan = np.sum(nan_mask)
@@ -88,7 +72,7 @@ def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
                     nan_report_rows.append(f"  {col_name}: {nan_count_per_col[col_idx]} NaN values")
                     nan_report_rows.append(f"    Rows with NaN: {list(row_indices)}")
                     
-                    # CSV format: one row per NaN
+                    # one CSV row per NaN
                     for row_idx in row_indices:
                         nan_csv_rows.append({
                             'data_name': data_name,
@@ -115,13 +99,11 @@ def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
         
         print(f"{'='*80}\n")
         
-        # Save to files if output_dir is provided
         if output_dir:
-            # Sanitize data_name for filename
+            # safe filename from data_name
             safe_name = data_name.replace(' ', '_').replace('/', '_').replace('\\', '_')
             safe_name = ''.join(c for c in safe_name if c.isalnum() or c in ('_', '-'))
             
-            # Save TXT report (human-readable)
             txt_file = os.path.join(output_dir, f"nan_detection_{safe_name}.txt")
             with open(txt_file, 'w') as f:
                 f.write("="*80 + "\n")
@@ -131,7 +113,6 @@ def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
                 f.write("\n" + "="*80 + "\n")
             print(f"  Saved NaN report to: {txt_file}")
             
-            # Save CSV (structured data)
             if nan_csv_rows:
                 csv_file = os.path.join(output_dir, f"nan_detection_{safe_name}.csv")
                 df_nan = pd.DataFrame(nan_csv_rows)
@@ -140,19 +121,17 @@ def check_and_print_nan(data, data_name, feature_names=None, output_dir=None):
         
         return True
     else:
-        print(f"✓ No NaN detected in: {data_name}")
+        print(f"No NaN detected in: {data_name}")
         return False
 
 def _paths(bandwidth, output_dir):
-    """to construct paths to inside/outside region files"""
+    # inside/outside CSV paths for this bandwidth
     inside_file = os.path.join(output_dir, f"inside_points_bw_{bandwidth:.2f}.csv")
     outside_file = os.path.join(output_dir, f"outside_points_bw_{bandwidth:.2f}.csv")
     return inside_file, outside_file
 
 def split_data(bandwidth, feature_names, output_dir, random_state=42):
-    """
-    Create train/test splits from KDE-separated regions
-    """
+    # Train/test inside KDE hull; extrapolation set = outside CSV
     inside_file, outside_file = _paths(bandwidth, output_dir)
 
     if not os.path.exists(outside_file):
@@ -162,7 +141,6 @@ def split_data(bandwidth, feature_names, output_dir, random_state=42):
     X_test_extrapolation = outside_df[feature_names].values
     y_test_extrapolation = outside_df['target'].values
     
-    # Check for NaN values
     check_and_print_nan(X_test_extrapolation, "X_test_extrapolation (outside_df)", feature_names, output_dir)
     check_and_print_nan(y_test_extrapolation, "y_test_extrapolation (outside_df)", None, output_dir)
 
@@ -170,16 +148,14 @@ def split_data(bandwidth, feature_names, output_dir, random_state=42):
         inside_df = pd.read_csv(inside_file)
         X_inside = inside_df[feature_names].values
         y_inside = inside_df['target'].values
-        
-        # Check for NaN values before splitting
+
         check_and_print_nan(X_inside, "X_inside (before split)", feature_names, output_dir)
         check_and_print_nan(y_inside, "y_inside (before split)", None, output_dir)
 
         X_train, X_test_interpolation, y_train, y_test_interpolation = train_test_split(
             X_inside, y_inside, test_size=0.2, random_state=random_state
         )
-        
-        # Check for NaN values after splitting
+
         check_and_print_nan(X_train, "X_train (after split)", feature_names, output_dir)
         check_and_print_nan(y_train, "y_train (after split)", None, output_dir)
         check_and_print_nan(X_test_interpolation, "X_test_interpolation (after split)", feature_names, output_dir)
@@ -201,7 +177,7 @@ def _load_inside_outside(bandwidth, feature_names, output_dir):
     inside_df = pd.read_csv(inside_file) if os.path.exists(inside_file) else None
     outside_df = pd.read_csv(outside_file) if os.path.exists(outside_file) else None
 
-    # Check for NaN in loaded DataFrames
+    # post-load sanity on CSVs
     if inside_df is not None:
         print(f"\nChecking inside_df after loading from CSV (bandwidth={bandwidth:.2f}):")
         if inside_df.isna().any().any():
@@ -228,7 +204,7 @@ def _load_inside_outside(bandwidth, feature_names, output_dir):
                 pd.DataFrame(nan_csv_rows).to_csv(csv_file, index=False)
                 print(f"  Saved NaN details to: {csv_file}")
         else:
-            print(f"  ✓ No NaN detected in inside_df")
+            print(f"  No NaN detected in inside_df")
     
     if outside_df is not None:
         print(f"\nChecking outside_df after loading from CSV (bandwidth={bandwidth:.2f}):")
@@ -256,7 +232,7 @@ def _load_inside_outside(bandwidth, feature_names, output_dir):
                 pd.DataFrame(nan_csv_rows).to_csv(csv_file, index=False)
                 print(f"  Saved NaN details to: {csv_file}")
         else:
-            print(f"  ✓ No NaN detected in outside_df")
+            print(f"  No NaN detected in outside_df")
 
     X_out = y_out = None
     if outside_df is not None:
@@ -265,24 +241,14 @@ def _load_inside_outside(bandwidth, feature_names, output_dir):
     return inside_df, X_out, y_out
 
 def split_data_kfold(bandwidth, feature_names, output_dir, n_splits=3, shuffle=True, random_state=42, fold_number=None):
-    """
-    Create K-fold cross-validation splits
-    
-    Parameters:
-    -----------
-    fold_number : int, optional
-        If provided, only generate this specific fold (1-indexed). 
-        In this case, n_splits should match the total number of folds,
-        and random_state will be used to create a unique split for this fold.
-    """
+    # 20% inside held out for interpolation test; K-fold on the rest. fold_number: yield one fold only (1-based).
     inside_df, X_out, y_out = _load_inside_outside(bandwidth, feature_names, output_dir)
     if inside_df is None:
         return
 
     X_in = inside_df[feature_names].values
     y_in = inside_df['target'].values
-    
-    # Check for NaN values before splitting
+
     check_and_print_nan(X_in, "X_in (before CV split)", feature_names, output_dir)
     check_and_print_nan(y_in, "y_in (before CV split)", None, output_dir)
 
@@ -290,8 +256,7 @@ def split_data_kfold(bandwidth, feature_names, output_dir, n_splits=3, shuffle=T
     X_train_base, X_test_interpolation, y_train_base, y_test_interpolation = train_test_split(
         X_in, y_in, test_size=0.2, random_state=random_state
     )
-    
-    # Check for NaN values after initial split
+
     check_and_print_nan(X_train_base, "X_train_base (after initial split)", feature_names, output_dir)
     check_and_print_nan(y_train_base, "y_train_base (after initial split)", None, output_dir)
     check_and_print_nan(X_test_interpolation, "X_test_interpolation (after initial split)", feature_names, output_dir)
@@ -304,31 +269,28 @@ def split_data_kfold(bandwidth, feature_names, output_dir, n_splits=3, shuffle=T
         check_and_print_nan(y_out, "y_out (extrapolation)", None, output_dir)
 
     if fold_number is not None:
-        # Generate only the specified fold
+        # single fold
         print(f"\nK-FOLD CV DATA SPLIT (Bandwidth: {bandwidth:.2f}, Fold {fold_number}/{n_splits}, seed={random_state}):")
         print(f"  Inside region total:    {len(X_in)} samples")
         print(f"  Test Interpolation set: {len(X_test_interpolation)} samples (20% of inside, held out)")
         print(f"  Train+Val base:         {len(X_train_base)} samples (80% of inside, used for CV)")
         print(f"  Test Extrapolation set: {len(X_out) if X_out is not None else 0} samples (outside region)")
         
-        # Create KFold splitter and extract only the requested fold
         kf = KFold(n_splits=n_splits, shuffle=shuffle, random_state=random_state)
         folds = list(kf.split(X_train_base))
         if fold_number < 1 or fold_number > len(folds):
             return
         
-        tr, va = folds[fold_number - 1]  # Convert to 0-indexed
+        tr, va = folds[fold_number - 1]
         print(f"\n  Fold {fold_number}/{n_splits}:")
         print(f"    Train: {len(tr)} samples")
         print(f"    Val:   {len(va)} samples")
         
-        # Extract fold data
         X_train_fold = X_train_base[tr]
         y_train_fold = y_train_base[tr]
         X_val_fold = X_train_base[va]
         y_val_fold = y_train_base[va]
-        
-        # Check for NaN values in fold data
+
         check_and_print_nan(X_train_fold, f"X_train_fold (fold {fold_number})", feature_names, output_dir)
         check_and_print_nan(y_train_fold, f"y_train_fold (fold {fold_number})", None, output_dir)
         check_and_print_nan(X_val_fold, f"X_val_fold (fold {fold_number})", feature_names, output_dir)
@@ -336,7 +298,7 @@ def split_data_kfold(bandwidth, feature_names, output_dir, n_splits=3, shuffle=T
         
         yield fold_number, X_train_fold, y_train_fold, X_val_fold, y_val_fold, X_test_interpolation, y_test_interpolation, X_out, y_out
     else:
-        # Original behavior: generate all folds
+        # all folds
         print(f"\nK-FOLD CV DATA SPLIT SUMMARY (Bandwidth: {bandwidth:.2f}, {n_splits} folds):")
         print(f"  Inside region total:    {len(X_in)} samples")
         print(f"  Test Interpolation set: {len(X_test_interpolation)} samples (20% of inside, held out)")
@@ -351,13 +313,11 @@ def split_data_kfold(bandwidth, feature_names, output_dir, n_splits=3, shuffle=T
             print(f"    Train: {len(tr)} samples")
             print(f"    Val:   {len(va)} samples")
             
-            # Extract fold data
             X_train_fold = X_train_base[tr]
             y_train_fold = y_train_base[tr]
             X_val_fold = X_train_base[va]
             y_val_fold = y_train_base[va]
-            
-            # Check for NaN values in fold data
+
             check_and_print_nan(X_train_fold, f"X_train_fold (fold {idx})", feature_names, output_dir)
             check_and_print_nan(y_train_fold, f"y_train_fold (fold {idx})", None, output_dir)
             check_and_print_nan(X_val_fold, f"X_val_fold (fold {idx})", feature_names, output_dir)
