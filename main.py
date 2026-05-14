@@ -6,6 +6,7 @@ import multiprocessing as mp
 from pathlib import Path
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
+
 # One thread per BLAS/MKL worker avoids oversubscription when using spawn workers
 os.environ.setdefault("MPLBACKEND", "Agg")
 os.environ.setdefault("OMP_NUM_THREADS", "1")
