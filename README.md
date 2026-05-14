@@ -37,7 +37,7 @@ We test these extended (hybrid) criteria across 20 regression datasets from the 
     ├── generate_summary_statistics.py   # Summarises results across datasets
     ├── compare_correlations_baseline.py # Compares each lambda setting to the (0,0,0) baseline
     ├── calculate_best_per_run.py        # Finds the best metric and lambda per run
-    └── aggregate_extrapolation_performance.py  # Per-dataset summary and LaTeX tables
+    └── aggregate_extrapolation_performance.py  # Per-dataset summary tables
 ```
 
 ---
@@ -87,7 +87,7 @@ Takes the (0, 0, 0) setting (i.e. no penalty, just the base criterion) as a base
 For each dataset and each run, picks the (metric, lambda combination) with the highest Spearman correlation. Saves results in wide format, one row per run with separate columns for SVP/MVP and interpolation/extrapolation targets.
 
 **`aggregate_extrapolation_performance.py`**  
-Summarises results at the dataset level. Categorises each dataset by how much the best hybrid setting improves over the baseline, and generates LaTeX tables.
+Summarises results at the dataset level. Categorises each dataset by how much the best hybrid setting improves over the baseline.
 
 ---
 
@@ -141,7 +141,6 @@ Edit the top of `main.py` to set:
 | `correlations_<method>_<weight>.csv` | Spearman ρ per run and lambda combination |
 | `best_hybrid_overall*.csv` | Best lambda settings found |
 | `dataset_*_performance_summary*.csv` | Per-dataset results |
-| `dataset_*_performance_summary*.tex` | LaTeX tables |
 | `best_per_run/best_per_run_all_datasets.csv` | Best setting per run across all datasets |
 
 ---
