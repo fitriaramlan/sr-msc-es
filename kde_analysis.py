@@ -5,11 +5,12 @@ import matplotlib.pyplot as plt
 from sklearn.neighbors import KernelDensity
 from sklearn.preprocessing import StandardScaler
 
+# Legend size aligned with m1_evaluation figures
+PAPER_LEGEND_FONTSIZE = 14
+
 
 def report_nan_statistics(df, columns, output_dir):
-    """
-    Generate comprehensive NaN statistics report.
-    """
+    # Writes nan_statistics_report.txt and prints a short summary
     nan_stats = {}
     total_rows = len(df)
     
@@ -26,7 +27,7 @@ def report_nan_statistics(df, columns, output_dir):
         if n_nan > 0:
             print(f"  {col}: {n_nan} NaN values ({pct_nan:.2f}%)")
     
-    # Count rows with any NaN
+    # rows with any NaN in selected columns
     rows_with_nan = df[columns].isna().any(axis=1).sum()
     pct_rows_nan = (rows_with_nan / total_rows) * 100 if total_rows > 0 else 0
     
@@ -34,7 +35,6 @@ def report_nan_statistics(df, columns, output_dir):
     print(f"Rows without NaN: {total_rows - rows_with_nan} ({100 - pct_rows_nan:.2f}%)")
     print("="*60 + "\n")
     
-    # Save to file
     report_file = os.path.join(output_dir, "nan_statistics_report.txt")
     with open(report_file, 'w') as f:
         f.write("NaN STATISTICS REPORT\n")
@@ -50,20 +50,14 @@ def report_nan_statistics(df, columns, output_dir):
 
 
 def handle_nan_values(df, columns, method=None, output_dir=None):
-    """
-    Remove all rows (samples) that contain any NaN or infinity values.
-    """
-    # Report statistics before handling
+    # Drop rows with NaN or inf
     if output_dir:
         report_nan_statistics(df, columns, output_dir)
-    
+
     rows_before = len(df)
-    
-    # Remove all rows that contain any NaN values
+
     df = df.dropna()
-    
-    # Also remove rows with infinity values (both +inf and -inf)
-    # Replace infinity with NaN first, then drop those rows
+
     df = df.replace([np.inf, -np.inf], np.nan)
     df = df.dropna()
     
@@ -90,12 +84,9 @@ def compute_bandwidths(data):
 
 
 def kde_analysis(input_file, output_dir, shrink=10, nan_method=None):
-    """
-    Perform KDE-based density analysis to separate high and low-density regions.
-    """
+    # KDE on standardised X; percentile threshold splits inside vs outside; writes CSVs and plots per bandwidth
     os.makedirs(output_dir, exist_ok=True)
 
-    # Load data and setup
     df = np.load(input_file)
     original_size = df.shape[0]
     n_features = df.shape[1] - 1
@@ -108,7 +99,6 @@ def kde_analysis(input_file, output_dir, shrink=10, nan_method=None):
     print(f"Original dataset size: {original_size} samples")
     print(f"Number of features: {n_features}")
     
-    # Handle NaN values with chosen method
     df = handle_nan_values(df, columns, method=nan_method, output_dir=output_dir)
     
     final_size = df.shape[0]
@@ -121,11 +111,31 @@ def kde_analysis(input_file, output_dir, shrink=10, nan_method=None):
     target = df.iloc[:, -1].values
     feature_names = df.columns[:-1]
 
-    # Standardise features for KDE (sensitive to scale)
+    # KDE needs scaled features
     scaler = StandardScaler()
     data_scaled = scaler.fit_transform(data_original)
 
-    # Test multiple bandwidths
+    # quick look: dim 0 vs y (full sample)
+    if n_features >= 1:
+        fig0, ax0 = plt.subplots(figsize=(7, 5))
+        ax0.scatter(
+            data_scaled[:, 0],
+            target,
+            c="0.35",
+            s=12,
+            alpha=0.65,
+            edgecolors="none",
+        )
+        ax0.set_xlabel(f"{feature_names[0]} (standardised)")
+        ax0.set_ylabel("target")
+        ax0.set_title("Full data: feature 0 vs target (before KDE inside/outside split)")
+        ax0.grid(True, alpha=0.3)
+        fig0.tight_layout()
+        fig0.savefig(os.path.join(output_dir, "plot_feature1_vs_target_before_kde_split.png"))
+        fig0.savefig(os.path.join(output_dir, "plot_feature1_vs_target_before_kde_split.pdf"))
+        plt.close(fig0)
+
+    # fixed grid plus Scott/Silverman
     scott_bandwidth, silverman_bandwidth = compute_bandwidths(data_scaled)
     bandwidths = [0.1, 0.3, 0.5, 1.0, scott_bandwidth, silverman_bandwidth]
 
@@ -135,29 +145,24 @@ def kde_analysis(input_file, output_dir, shrink=10, nan_method=None):
         kde = KernelDensity(kernel='gaussian', bandwidth=bandwidth).fit(data_scaled)
         densities_data = np.exp(kde.score_samples(data_scaled))
 
-        # Percentile-based thresholding for region separation
         threshold = np.percentile(densities_data, shrink)
         inside_mask = densities_data >= threshold
         outside_mask = densities_data < threshold
 
-        # ensure extrapolation region is non-empty
-        # This can occur with very tight bandwidth or homogeneous data
+        # empty outside band (tiny h or nearly constant density)
         if np.sum(outside_mask) == 0:
-            print(f"  Warning: No outside points detected, forcing creation...")
+            print(f"  Warning: no outside points; taking lowest-density tail")
             bottom_n = max(10, len(data_scaled) // 10)
             forced_indices = np.argsort(densities_data)[:bottom_n]
             outside_mask[:] = False
             outside_mask[forced_indices] = True
             inside_mask = ~outside_mask
 
-        # Separate regions and save
         inside_points = pd.DataFrame(data_scaled[inside_mask], columns=feature_names)
         inside_points["target"] = target[inside_mask]
         outside_points = pd.DataFrame(data_scaled[outside_mask], columns=feature_names)
         outside_points["target"] = target[outside_mask]
         
-        # Check for NaN values before saving
-        print(f"\nChecking for NaN values before saving CSV files (bandwidth={bandwidth:.2f}):")
         inside_has_nan = inside_points.isna().any().any()
         outside_has_nan = outside_points.isna().any().any()
         
@@ -210,7 +215,7 @@ def kde_analysis(input_file, output_dir, shrink=10, nan_method=None):
                 print(f"  Saved NaN details to: {csv_file}")
         
         if not inside_has_nan and not outside_has_nan:
-            print(f"  ✓ No NaN detected in inside_points or outside_points")
+            print(f"  No NaN detected in inside_points or outside_points")
 
         # Report region sizes
         n_inside = len(inside_points)
@@ -224,14 +229,14 @@ def kde_analysis(input_file, output_dir, shrink=10, nan_method=None):
         print(f"  Saved: inside_points_bw_{bandwidth:.2f}.csv")
         print(f"  Saved: outside_points_bw_{bandwidth:.2f}.csv")
 
-        # Visualise separation in 2D (first two features)
+        # (x1, x2) coloured by region
         x1, x2 = data_scaled[:, 0], data_scaled[:, 1]
         plt.scatter(x1[inside_mask], x2[inside_mask], c='blue', s=5, label='Inside', alpha=0.6)
         plt.scatter(x1[outside_mask], x2[outside_mask], c='red', s=5, label='Outside', alpha=0.6)
         plt.xlabel(feature_names[0])
         plt.ylabel(feature_names[1])
         plt.title(f"Plot with Bandwidth: {bandwidth:.2f}", fontsize=16)
-        plt.legend()
+        plt.legend(fontsize=PAPER_LEGEND_FONTSIZE)
         plt.savefig(os.path.join(output_dir, f"plot_bw_{bandwidth:.2f}.pdf"))
         plt.savefig(os.path.join(output_dir, f"plot_bw_{bandwidth:.2f}.png"))
         plt.show()
