@@ -98,7 +98,6 @@ Summarises results at the dataset level. Categorises each dataset by how much th
 - scikit-learn, NumPy, pandas, matplotlib, seaborn
 - JAX (CPU only)
 - SymPy, SciPy
-- `interval`
 
 ```bash
 pip install pysr scikit-learn numpy pandas matplotlib seaborn jax sympy scipy
