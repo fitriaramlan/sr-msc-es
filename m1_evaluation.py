@@ -14,7 +14,7 @@ import re
 from collections import Counter
 import jax.numpy as jnp
 import jax
-# Configure JAX to use CPU only to avoid GPU/CUDA initialization issues in multiprocessing
+# JAX: force CPU (avoids CUDA init issues with multiprocessing)
 jax.config.update('jax_platform_name', 'cpu')
 import sympy as sp
 from scipy.stats import spearmanr
@@ -28,6 +28,12 @@ matplotlib.rcParams['pdf.fonttype'] = 42           # TrueType fonts
 matplotlib.rcParams['ps.fonttype'] = 42
 matplotlib.rcParams['font.family'] = 'serif'
 matplotlib.rcParams['font.serif'] = ['Times New Roman']
+
+# Figure defaults for thesis plots
+SYNTHETIC_SCATTER_COLOR = "#e6b800"
+SYNTHETIC_SCATTER_EDGECOLOR = "#333333"
+SYNTHETIC_SCATTER_EDGELW = 0.35
+PAPER_LEGEND_FONTSIZE = 14
 
 
 class ModelEvaluator:
@@ -46,17 +52,14 @@ class ModelEvaluator:
         return mse
 
     def gaussian_likelihood(self, y_true, y_pred):
-        """Calculate gaussian likelihood"""
         y_true = np.array(y_true)
         y_pred = np.array(y_pred)
         
         resid = y_true - y_pred
         sigma = float(np.std(resid))
-        
-        # Edge case: perfect fit or constant prediction
-        # Avoid division by zero
+
         if sigma <= 0:
-            sigma = 1e-8
+            sigma = 1e-8  # avoid log(0) on σ
         
         n = len(y_true)
         ll = (-(n / 2) * jnp.log(2 * jnp.pi * sigma ** 2)) - ((1 / (2 * sigma ** 2)) * jnp.sum((y_true - y_pred) ** 2))
@@ -64,7 +67,6 @@ class ModelEvaluator:
         return float(ll), sigma
 
     def gaussian_likelihood_with_sigma(self, y_true, y_pred, sigma_err):
-        """Compute Gaussian log-likelihood with provided sigma for Fisher Information calculations"""
         y_true = jnp.array(y_true)
         y_pred = jnp.array(y_pred)
         n = len(y_true)
@@ -73,7 +75,6 @@ class ModelEvaluator:
         return log_likelihood
 
     def count_constants(self, equation):
-        """Extract and count numerical constants in symbolic expression"""
         if not isinstance(equation, str):
             equation = str(equation)
         constants = re.findall(r'\b\d+\.\d+\b', equation)
@@ -81,7 +82,6 @@ class ModelEvaluator:
         return constants_count, sum(constants_count.values())
 
     def calculate_aic(self, log_likelihood, k):
-        """Calculate AIC"""
         return (-2 * log_likelihood) + (2 * k)
 
     def calculate_aicc(self, log_likelihood, k, n):
@@ -90,16 +90,13 @@ class ModelEvaluator:
         return aic + adjusted
 
     def calculate_bic(self, log_likelihood, k, n):
-        """Calculate BIC"""
         return (-2 * log_likelihood) + (jnp.log(n) * k)
 
     def fisher_information_matrix(self, log_likelihood_func, params):
-        """Compute Fisher Information Matrix"""
         hessian = jax.hessian(log_likelihood_func)(params)
         return -hessian
 
     def calculate_mdl(self, log_likelihood, fisher_info_matrix, params, equation):
-        """Calculate MDL"""
         k = len(params)
         _, u = self.count_distinct_symbols(equation)
         w, _ = self.count_total_symbols(equation)
@@ -108,7 +105,6 @@ class ModelEvaluator:
         return mdl
 
     def count_distinct_symbols(self, equation):
-        """Count unique symbols (variables, constants, operators) in expression"""
         if not isinstance(equation, str):
             equation = str(equation)
         pattern = r'[a-zA-Z_]\w*|\d+\.\d+|\d+|[-+*/^]'
@@ -117,7 +113,6 @@ class ModelEvaluator:
         return unique_symbols, len(unique_symbols)
 
     def count_total_symbols(self, equation):
-        """Count total symbols (with repetition) in expression."""
         if not isinstance(equation, str):
             equation = str(equation)
         pattern = r'[a-zA-Z_]\w*|\d+\.\d+|\d+|[-+*/^]'
@@ -125,7 +120,6 @@ class ModelEvaluator:
         return len(tokens), tokens
 
     def ensure_column_lengths_consistent(self, results):
-        """Validate that all result columns have consistent lengths (for DataFrame creation)"""
         lengths = {key: len(values) for key, values in results.items()}
         unique_lengths = set(lengths.values())
         if len(unique_lengths) > 1:
@@ -140,10 +134,7 @@ class ModelEvaluator:
         return range_extrap / (range_interp + 1)
 
     def compute_prediction_variance_mv(self, expr, X, perturb_percent=0.03):
-        """
-        Compute prediction variance via Multiple Variables Perturbation
-        Perturb all variables with all 2^N combinations of up and down
-        """
+        # MVP: all ±3% combinations of inputs to variance of predictions across combinations
         symbols = sorted(expr.free_symbols, key=lambda s: str(s))
         if not symbols:
             return 0.0
@@ -155,98 +146,75 @@ class ModelEvaluator:
             if name.startswith("x") and name[1:].isdigit():
                 symbol_indices.append(int(name[1:]))
             elif name.startswith("feature_") and name.split("_")[-1].isdigit():
-                # handle feature_1 style naming (convert to zero-based)
-                symbol_indices.append(int(name.split("_")[-1]) - 1)
+                symbol_indices.append(int(name.split("_")[-1]) - 1)  # 0-based column index
             else:
                 raise ValueError(f"Unsupported symbol name '{name}' in expression '{expr}'")
         X_sub = X[:, symbol_indices]
         
-        # Generate all combinations of + and - perturbations for each variable
-        # For 2 variables: [(1.03, 1.03), (1.03, 0.97), (0.97, 1.03), (0.97, 0.97)]
         combinations = list(itertools.product([1 + perturb_percent, 1 - perturb_percent], repeat=n_vars))
         
         predictions = []
         try:
             f = sp.lambdify(symbols, expr, modules='numpy')
 
-            # Evaluate the expression for each combination
             for combo_idx, combo in enumerate(combinations):
                 X_perturbed = X_sub.copy()
 
-                # Apply the perturbation to each variable according to the combination
                 for var_idx, perturbation_factor in enumerate(combo):
                     X_perturbed[:, var_idx] *= perturbation_factor
-                
+
                 try:
                     y_pred = f(*X_perturbed.T)
                     predictions.append(y_pred)
                 except Exception as eval_error:
-                    # Failed during evaluation of a specific perturbation combination
-                    # This could be due to: divide by zero, log(<=0), sqrt(<0), etc.
                     print(f"WARNING: Sensitivity calculation failed (MVP) during evaluation: "
                           f"Equation={expr}, Combo={combo_idx}/{len(combinations)}, "
                           f"Error={type(eval_error).__name__}: {str(eval_error)}")
-                    return 1000000  # Bad equation → high sensitivity (finite value instead of inf)
+                    return 1000000
         except Exception as e:
-            # Equation failed during lambdify or other setup (e.g., unsupported operations)
-            # Return high value to indicate BAD behavior (not 0.0 which looks "good")
             print(f"WARNING: Sensitivity calculation failed (MVP) during setup: "
                   f"Equation={expr}, Error={type(e).__name__}: {str(e)}")
-            return 1000000  # Bad equation → high sensitivity (finite value instead of inf)
+            return 1000000
         
         if len(predictions) < 2:
             return 0.0
-        
-        # matrix of predictions shape (n_combinations, n_samples)
+
         pred_matrix = np.vstack(predictions)
 
-        # Check for NaN/inf values - if ANY are found, penalize heavily
         finite_mask = np.isfinite(pred_matrix)
         n_invalid = pred_matrix.size - np.sum(finite_mask)
-        
-        # If ANY predictions are invalid (NaN or inf), return large penalty
-        # This indicates the equation is unstable/unreliable
+
         if n_invalid > 0:
             print(f"WARNING: Prediction variance (MVP) detected {n_invalid} invalid predictions (NaN/inf) for equation {expr}, returning penalty")
             return 1000000
-        
-        # All predictions are valid - compute variance normally
+
         sample_variances = []
         for sample_idx in range(pred_matrix.shape[1]):
             sample_predictions = pred_matrix[:, sample_idx]
-            
+
             if len(sample_predictions) < 2:
-                # Not enough predictions for this sample
                 sample_variances.append(1000000)
             else:
                 sample_var = np.var(sample_predictions)
-                # Check if variance itself is inf or nan
                 if not np.isfinite(sample_var):
                     sample_variances.append(1000000)
                 else:
                     sample_variances.append(sample_var)
-        
-        # Average variance across samples
+
         if len(sample_variances) == 0:
             return 1000000
-        
+
         variance = np.mean(sample_variances)
-        
-        # Final check: ensure variance is finite
+
         if not np.isfinite(variance):
             print(f"WARNING: Prediction variance (MVP) is {variance} for equation {expr}, returning finite penalty")
             return 1000000
-        
+
         return variance
 
 
     def compute_prediction_variance_sv(self, expr, X, perturb_percent=0.03):
-        """
-        Compute prediction variance via Single Variable Perturbation
-        
-        Perturb each variable one at a time
-        For example, for 2 variables: [(x1+), (x1-), (x2+), (x2-)]
-        """
+        # SVP: ±3% on one coordinate at a time
         symbols = sorted(expr.free_symbols, key=lambda s: str(s))
         if not symbols:
             return 0.0
@@ -261,148 +229,108 @@ class ModelEvaluator:
             else:
                 raise ValueError(f"Unsupported symbol name '{name}' in expression '{expr}'")
         X_sub = X[:, symbol_indices]
-        
-        # Perturb each variable one at a time
+
         predictions = []
         try:
             f = sp.lambdify(symbols, expr, modules='numpy')
 
-            # Perturb each variable one at a time
             for var_idx in range(len(symbols)):
                 X_perturbed_up = X_sub.copy()
                 X_perturbed_down = X_sub.copy()
 
-                # Perturb only the current variable
                 X_perturbed_up[:, var_idx] *= (1 + perturb_percent)
                 X_perturbed_down[:, var_idx] *= (1 - perturb_percent)
 
-                # Evaluate the expression
                 try:
                     y_pred_up = f(*X_perturbed_up.T)
                 except Exception as eval_error_up:
-                    # Failed during evaluation of up perturbation
                     print(f"WARNING: Sensitivity calculation failed (SVP) during evaluation (UP): "
                           f"Equation={expr}, Variable={var_idx}, "
                           f"Error={type(eval_error_up).__name__}: {str(eval_error_up)}")
-                    return 1000000  # Bad equation → high sensitivity (finite value instead of inf)
-                
+                    return 1000000
+
                 try:
                     y_pred_down = f(*X_perturbed_down.T)
                 except Exception as eval_error_down:
-                    # Failed during evaluation of down perturbation
                     print(f"WARNING: Sensitivity calculation failed (SVP) during evaluation (DOWN): "
                           f"Equation={expr}, Variable={var_idx}, "
                           f"Error={type(eval_error_down).__name__}: {str(eval_error_down)}")
-                    return 1000000  # Bad equation → high sensitivity (finite value instead of inf)
-                
+                    return 1000000
+
                 predictions.extend([y_pred_up, y_pred_down])
         except Exception as e:
-            # Equation failed during lambdify or other setup (e.g., unsupported operations)
-            # Return high value to indicate BAD behavior (not 0.0 which looks "good")
             print(f"WARNING: Sensitivity calculation failed (SVP) during setup: "
                   f"Equation={expr}, Error={type(e).__name__}: {str(e)}")
-            return 1000000  # Bad equation → high sensitivity (finite value instead of inf)
-            
+            return 1000000
+
         if len(predictions) < 2:
             return 0.0
         pred_matrix = np.vstack(predictions)
-        
-        # Check for NaN/inf values - if ANY are found, penalize heavily
+
         finite_mask = np.isfinite(pred_matrix)
         n_invalid = pred_matrix.size - np.sum(finite_mask)
-        
-        # If ANY predictions are invalid (NaN or inf), return large penalty
-        # This indicates the equation is unstable/unreliable
+
         if n_invalid > 0:
             print(f"WARNING: Prediction variance (SVP) detected {n_invalid} invalid predictions (NaN/inf) for equation {expr}, returning penalty")
             return 1000000
-        
-        # All predictions are valid - compute variance normally
+
         sample_variances = []
         for sample_idx in range(pred_matrix.shape[1]):
             sample_predictions = pred_matrix[:, sample_idx]
-            
+
             if len(sample_predictions) < 2:
-                # Not enough predictions for this sample
                 sample_variances.append(1000000)
             else:
                 sample_var = np.var(sample_predictions)
-                # Check if variance itself is inf or nan
                 if not np.isfinite(sample_var):
                     sample_variances.append(1000000)
                 else:
                     sample_variances.append(sample_var)
-        
-        # Average variance across samples
+
         if len(sample_variances) == 0:
             return 1000000
-        
+
         variance = np.mean(sample_variances)
-        
-        # Final check: ensure variance is finite
+
         if not np.isfinite(variance):
             print(f"WARNING: Prediction variance (SVP) is {variance} for equation {expr}, returning finite penalty")
             return 1000000
-        
+
         return variance
 
     def calculate_hybrid_score(self, base_metric, extrap_div, sens_interp, sens_extrap, lambda1=0.5, lambda2=0.5, lambda3=0.5):
-        """
-        Calculate hybrid score combining base metric with extrapolation measures.
-        base_metric: The base metric value (AIC, BIC, MDL, PSM, or MSE)
-        extrap_div: Extrapolation diversity measure
-        sens_interp: Sensitivity for interpolation
-        sens_extrap: Sensitivity for extrapolation
-        lambda1, lambda2, lambda3: Weighting parameters
-        
-        Returns:
-            Hybrid score value
-        """
         score = base_metric + lambda1 * extrap_div + lambda2 * sens_interp + lambda3 * sens_extrap
         return score
-    
+
     def get_weight_combinations(self):
-        """Generate weight combinations for lambda parameters (excluding 0.0)."""
         weights = [0.1, 0.3, 0.5, 0.7, 1.0]
-        
+
         combinations = []
         for w1 in weights:
             for w2 in weights:
                 for w3 in weights:
                     combinations.append((w1, w2, w3))
-        
-        # Strategic weight combinations for different evaluation focuses
+
+        # hand-picked lambda triples as well as the grid
         special_combinations = [
-            # Equal weights - balanced approach
             (0.5, 0.5, 0.5),
-            
-            # Extrapolation focus - prioritise extrapolation divergence and extrapolation sensitivity
-            (1.0, 0.2, 1.0),  # High extrap_div, low interp_sens, high extrap_sens
-            (0.8, 0.3, 0.9),  # Strong extrapolation focus
-            
-            # Sensitivity focus - prioritize both interpolation and extrapolation sensitivity
-            (0.3, 1.0, 1.0),  # Low extrap_div, high interp_sens, high extrap_sens
-            (0.4, 0.9, 0.8),  # Strong sensitivity focus
-            
-            # No penalty - minimal weights on all penalty terms
-            (0.1, 0.1, 0.1),  # Minimal penalties
-            (0.0, 0.0, 0.0),  # No penalties at all
-            
-            # Light penalty - moderate weights
-            (0.3, 0.3, 0.3),  # Light penalties
-            (0.4, 0.2, 0.4),  # Light penalties with slight extrapolation focus
-            
-            # Heavy penalty - strong weights on all terms
-            (1.0, 1.0, 1.0),  # Maximum penalties
-            (0.8, 0.8, 0.8),  # Heavy penalties
-            (0.9, 0.7, 0.9),  # Heavy penalties with extrapolation emphasis
+            (1.0, 0.2, 1.0),
+            (0.8, 0.3, 0.9),
+            (0.3, 1.0, 1.0),
+            (0.4, 0.9, 0.8),
+            (0.1, 0.1, 0.1),
+            (0.0, 0.0, 0.0),
+            (0.3, 0.3, 0.3),
+            (0.4, 0.2, 0.4),
+            (1.0, 1.0, 1.0),
+            (0.8, 0.8, 0.8),
+            (0.9, 0.7, 0.9),
         ]
-        
+
         all_combinations = list(set(combinations + special_combinations))
         return sorted(all_combinations)
-    
+
     def calculate_all_hybrid_scores(self, base_metric, extrap_div, sens_interp, sens_extrap):
-        """Calculate hybrid scores for all weight combinations."""
         weight_combinations = self.get_weight_combinations()
         results = {}
         
@@ -433,16 +361,13 @@ def save_synthetic_data(X_synth, y_synth, feature_names, filename, output_dir):
         print(f"Skipping {filename}: X_synth ({X_synth.shape[0]}) & y_synth ({y_synth.shape[0]}) length mismatch.")
 
 
-def save_run_results_cv(gp_results, model_selection_criteria, hybrid_scores_sv, hybrid_scores_mv, 
+def save_run_results_cv(gp_results, model_selection_criteria, hybrid_scores_sv, hybrid_scores_mv,
                         run_num, output_dir):
-    """Save results for a specific run in CV mode"""
-    # Filter results for current run
     run_gp_results = [r for r in gp_results if r[0] == run_num]
     run_model_selection = [r for r in model_selection_criteria if r[0] == run_num]
     run_hybrid_sv = [r for r in hybrid_scores_sv if r[0] == run_num]
     run_hybrid_mv = [r for r in hybrid_scores_mv if r[0] == run_num]
     
-    # Save GP results
     if run_gp_results:
         gp_results_df = pd.DataFrame(run_gp_results, columns=[
             "Run", "Fold", "Equation_Index",
@@ -451,7 +376,6 @@ def save_run_results_cv(gp_results, model_selection_criteria, hybrid_scores_sv, 
         gp_results_df.to_csv(os.path.join(output_dir, f"gp_model_evaluation_results_cv_run_{run_num}.csv"), index=False)
         print(f"Saved: gp_model_evaluation_results_cv_run_{run_num}.csv")
     
-    # Save model selection criteria
     if run_model_selection:
         model_selection_df = pd.DataFrame(run_model_selection, columns=[
             "Run", "Fold", "Equation_Index", "Complexity", "Constant_Num", "Total_Symbols", "Distinct_Symbols",
@@ -465,7 +389,6 @@ def save_run_results_cv(gp_results, model_selection_criteria, hybrid_scores_sv, 
         model_selection_df.to_csv(os.path.join(output_dir, f"gp_model_selection_criteria_cv_run_{run_num}.csv"), index=False)
         print(f"Saved: gp_model_selection_criteria_cv_run_{run_num}.csv")
     
-    # Save hybrid scores SV
     if run_hybrid_sv:
         hybrid_sv_df = pd.DataFrame(run_hybrid_sv, columns=[
             "Run", "Fold", "Equation_Index",
@@ -476,7 +399,6 @@ def save_run_results_cv(gp_results, model_selection_criteria, hybrid_scores_sv, 
         hybrid_sv_df.to_csv(os.path.join(output_dir, f"hybrid_model_scores_sv_cv_run_{run_num}.csv"), index=False)
         print(f"Saved: hybrid_model_scores_sv_cv_run_{run_num}.csv")
     
-    # Save hybrid scores MV
     if run_hybrid_mv:
         hybrid_mv_df = pd.DataFrame(run_hybrid_mv, columns=[
             "Run", "Fold", "Equation_Index",
@@ -490,14 +412,11 @@ def save_run_results_cv(gp_results, model_selection_criteria, hybrid_scores_sv, 
 
 def save_run_results_noncv(gp_results, model_selection_criteria, hybrid_scores_sv, hybrid_scores_mv,
                            run_num, output_dir):
-    """Save results for a specific run in non-CV mode"""
-    # Filter results for current run
     run_gp_results = [r for r in gp_results if r[0] == run_num]
     run_model_selection = [r for r in model_selection_criteria if r[0] == run_num]
     run_hybrid_sv = [r for r in hybrid_scores_sv if r[0] == run_num]
     run_hybrid_mv = [r for r in hybrid_scores_mv if r[0] == run_num]
     
-    # Save GP results
     if run_gp_results:
         gp_results_df = pd.DataFrame(run_gp_results, columns=[
             "Run", "Equation_Index",
@@ -506,7 +425,6 @@ def save_run_results_noncv(gp_results, model_selection_criteria, hybrid_scores_s
         gp_results_df.to_csv(os.path.join(output_dir, f"gp_model_evaluation_results_run_{run_num}.csv"), index=False)
         print(f"Saved: gp_model_evaluation_results_run_{run_num}.csv")
     
-    # Save model selection criteria
     if run_model_selection:
         model_selection_df = pd.DataFrame(run_model_selection, columns=[
             "Run", "Equation_Index", "Complexity", "Constant_Num", "Total_Symbols", "Distinct_Symbols",
@@ -518,7 +436,6 @@ def save_run_results_noncv(gp_results, model_selection_criteria, hybrid_scores_s
         model_selection_df.to_csv(os.path.join(output_dir, f"gp_model_selection_criteria_run_{run_num}.csv"), index=False)
         print(f"Saved: gp_model_selection_criteria_run_{run_num}.csv")
     
-    # Save hybrid scores SV
     if run_hybrid_sv:
         hybrid_sv_df = pd.DataFrame(run_hybrid_sv, columns=[
             "Run", "Equation_Index",
@@ -529,7 +446,6 @@ def save_run_results_noncv(gp_results, model_selection_criteria, hybrid_scores_s
         hybrid_sv_df.to_csv(os.path.join(output_dir, f"hybrid_model_scores_sv_run_{run_num}.csv"), index=False)
         print(f"Saved: hybrid_model_scores_sv_run_{run_num}.csv")
     
-    # Save hybrid scores MV
     if run_hybrid_mv:
         hybrid_mv_df = pd.DataFrame(run_hybrid_mv, columns=[
             "Run", "Equation_Index",
@@ -542,48 +458,22 @@ def save_run_results_noncv(gp_results, model_selection_criteria, hybrid_scores_s
 
 
 def check_predictions_for_nan(predictions_dict, equation_index, equation_str, output_dir, run=None, fold=None):
-    """
-    Check if any predictions contain NaN or infinity values.
-    
-    Parameters:
-    -----------
-    predictions_dict : dict
-        Dictionary with keys like 'train', 'val', 'test_int', 'test_ext', 'synthetic'
-        and values as numpy arrays of predictions
-    equation_index : int
-        Index of the equation being evaluated
-    equation_str : str
-        String representation of the equation
-    output_dir : str
-        Directory to save NaN/infinity reports
-    run : int, optional
-        Run number
-    fold : int, optional
-        Fold number (for CV mode)
-    
-    Returns:
-    --------
-    bool : True if NaN or infinity detected, False otherwise
-    dict : Dictionary with invalid counts per prediction type
-    """
+    # Logs non-finite preds to output_dir; returns (flag, counts per split)
     has_invalid = False
     invalid_counts = {}
     
     for pred_type, pred_array in predictions_dict.items():
         if pred_array is not None and len(pred_array) > 0:
-            # Check for both NaN and infinity
             invalid_count = np.sum(~np.isfinite(pred_array))
             invalid_counts[pred_type] = invalid_count
             if invalid_count > 0:
                 has_invalid = True
     
     if has_invalid:
-        # Log which predictions have NaN
         run_str = f"_run{run}" if run is not None else ""
         fold_str = f"_fold{fold}" if fold is not None else ""
         safe_name = f"equation_{equation_index}{run_str}{fold_str}".replace(' ', '_')
-        
-        # Save invalid values report
+
         invalid_report = []
         invalid_report.append(f"NaN/Infinity DETECTED in predictions for equation {equation_index}")
         invalid_report.append(f"Equation: {equation_str}")
@@ -598,14 +488,12 @@ def check_predictions_for_nan(predictions_dict, equation_index, equation_str, ou
                 nan_count = np.sum(np.isnan(pred_array))
                 inf_count = np.sum(np.isinf(pred_array))
                 invalid_report.append(f"  {pred_type}: {invalid_count} invalid values (NaN: {nan_count}, Infinity: {inf_count}) out of {len(pred_array)}")
-                # Find which indices have NaN or infinity
                 invalid_indices = np.where(~np.isfinite(pred_array))[0]
                 nan_indices = np.where(np.isnan(pred_array))[0]
                 inf_indices = np.where(np.isinf(pred_array))[0]
                 invalid_report.append(f"    NaN at indices: {list(nan_indices)}")
                 invalid_report.append(f"    Infinity at indices: {list(inf_indices)}")
                 
-                # Add to CSV
                 for idx in invalid_indices:
                     is_nan = np.isnan(pred_array[idx])
                     is_inf = np.isinf(pred_array[idx])
@@ -622,7 +510,6 @@ def check_predictions_for_nan(predictions_dict, equation_index, equation_str, ou
                         'invalid_count': invalid_count
                     })
         
-        # Save report
         txt_file = os.path.join(output_dir, f"invalid_predictions_{safe_name}.txt")
         with open(txt_file, 'w') as f:
             f.write("="*80 + "\n")
@@ -651,7 +538,6 @@ def check_predictions_for_nan(predictions_dict, equation_index, equation_str, ou
 
 
 def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=True, n_splits=3, start_run=1, end_run=None):
-    # Determine run range
     if end_run is None:
         end_run = num_runs
     start_run = max(1, start_run)
@@ -664,14 +550,12 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
     
     yhat_gpe_values = []
     
-    # List to collect all equations across all runs (one Pareto front per run/fold)
     all_equations_list = []
-    
-    # Track skipped equations due to NaN
+
     skipped_equations = []
 
     def to_float(x):
-        """handling SymPy expressions"""
+        # sympy scalar to float (best effort)
         try:
             return float(x)
         except Exception:
@@ -687,21 +571,18 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
 
     for bandwidth in bandwidths:
         if use_cv:
-            # CV mode
             any_fold = False
 
-            # for run in range(num_runs):
             for run in range(start_run - 1, end_run):
                 start_time = time.time()
-                # Folds will be iterated inside each run
-                # Use run as random_state to get different CV splits for each run
+                # random_state=run: different CV partition each repeat
                 for (fold_idx,
                      X_train, y_train,
                      X_val, y_val,
                      X_test_interpolation, y_test_interpolation,
                      X_test_extrapolation, y_test_extrapolation) in split_data_kfold(
                         bandwidth, feature_names, output_dir, n_splits=n_splits, random_state=run
-                ):  # find the data split
+                ):
                     any_fold = True
                     num_features = X_train.shape[1]
                     models = get_models()
@@ -709,13 +590,11 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
 
                     print(f"Run {run + 1}/{num_runs} - BW: {bandwidth:.3f} - Fold: {fold_idx}/{n_splits}")
 
-                    # per-run, per-fold synthetic stores
                     X_synth_values, y_synth_values = {}, {}
 
-                    for model_name, model in models.items():   # find the model
+                    for model_name, model in models.items():
                         model.set_params(random_state=run)
                         
-                        # Check for NaN before fitting
                         if np.any(np.isnan(X_train)):
                             print(f"\n[ERROR] NaN detected in X_train before fitting {model_name}")
                             print(f"  Shape: {X_train.shape}")
@@ -724,7 +603,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             print(f"  Rows with NaN: {nan_rows}")
                             print(f"  Columns with NaN: {nan_cols}")
                             
-                            # Save NaN details to file
                             nan_csv_rows = []
                             for col_idx in nan_cols:
                                 col_nan_rows = np.where(np.isnan(X_train[:, col_idx]))[0]
@@ -753,7 +631,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             nan_indices = np.where(np.isnan(y_train))[0]
                             print(f"  NaN at indices: {nan_indices}")
                             
-                            # Save NaN details to file
                             nan_csv_rows = [{
                                 'data_name': f'y_train_{model_name}_run{run+1}_fold{fold_idx}',
                                 'row_index': int(idx),
@@ -773,7 +650,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                         fit = model.fit(X_train, y_train)
                         fit_values.append(fit)
 
-                        # predictions
                         yhat_train = model.predict(X_train)
                         yhat_val = model.predict(X_val)
                         yhat_test_int = model.predict(X_test_interpolation)
@@ -781,8 +657,7 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                     if X_test_extrapolation is not None and X_test_extrapolation.shape[0] > 0
                                     else np.array([]))
 
-                        # distances & residuals
-                        centroid = np.mean(X_train, axis=0)  # find the centroid
+                        centroid = np.mean(X_train, axis=0)
                         dist_train = np.linalg.norm(X_train - centroid, axis=1)
                         dist_val = np.linalg.norm(X_val - centroid, axis=1)
                         dist_test_int = np.linalg.norm(X_test_interpolation - centroid, axis=1)
@@ -818,14 +693,13 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                         plt.xlabel('Distance from Centroid', fontsize=16)
                         plt.ylabel('Absolute Residuals', fontsize=16)
                         plt.title(f'Residuals vs. Distance | {model_name} | Run {run + 1} | Fold {fold_idx}', fontsize=18)
-                        plt.legend(fontsize=12)
+                        plt.legend(fontsize=PAPER_LEGEND_FONTSIZE)
                         plt.grid(True)
                         plt.tight_layout()
-                        plt.savefig(os.path.join(output_dir, f"Residuals_vs_Distance_{model_name}_Run{run + 1}_Fold{fold_idx}.pdf"))  # save the figure
-                        plt.savefig(os.path.join(output_dir, f"Residuals_vs_Distance_{model_name}_Run{run + 1}_Fold{fold_idx}.png"))  # save the figure
+                        plt.savefig(os.path.join(output_dir, f"Residuals_vs_Distance_{model_name}_Run{run + 1}_Fold{fold_idx}.pdf"))
+                        plt.savefig(os.path.join(output_dir, f"Residuals_vs_Distance_{model_name}_Run{run + 1}_Fold{fold_idx}.png"))
                         plt.close()
 
-                        # synthetic generation from low-density training area
                         kde = KernelDensity(kernel='gaussian', bandwidth=bandwidth).fit(X_train)
                         log_scores = kde.score_samples(X_train)
                         num_required = max(10, int(0.1 * len(X_train)))
@@ -846,7 +720,7 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             X_synth_values[model_name] = np.array(X_synth)
                             y_synth_values[model_name] = np.array(y_synth)
                             
-                            if model_name == "PySR":  # Only print once
+                            if model_name == "PySR":
                                 print(f"      Synthetic data: {len(X_synth_values[model_name])} samples generated (20% of train size)")
 
                             save_synthetic_data(
@@ -854,7 +728,7 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                 f"X_synth_{model_name.lower()}_run{run + 1}_fold{fold_idx}.csv", output_dir
                             )
 
-                    # PySR metrics per equation (with VAL/EXT)
+                    # PySR: one row per equation on the Pareto front
                     if "PySR" in models:
                         gp_model = models["PySR"]
                         yhat_gpe = None
@@ -864,12 +738,10 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             equations_df = gp_model.equations_
                             equation = gp_model.sympy(j)
                             complexity = equations_df.iloc[j, 0]
-                            # constants count (k)
                             _, k = evaluator.count_constants(equation)
                             w, _ = evaluator.count_total_symbols(equation)
                             _, u = evaluator.count_distinct_symbols(equation)
 
-                            # predictions
                             yhat_train_pysr = gp_model.predict(X_train, index=j)
                             yhat_val_pysr = gp_model.predict(X_val, index=j)
                             yhat_test_int_pysr = gp_model.predict(X_test_interpolation, index=j)
@@ -877,14 +749,12 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                              if X_test_extrapolation is not None and X_test_extrapolation.shape[0] > 0
                                              else np.array([]))
                             
-                            # synthetic for PySR
                             if "PySR" not in X_synth_values or X_synth_values["PySR"] is None or X_synth_values["PySR"].size == 0:
                                 if len(X_synth_values) > 0:
                                     first_model = next(iter(X_synth_values))
                                     X_synth = X_synth_values[first_model]
                                     y_synth = y_synth_values[first_model]
                                 else:
-                                    # Skip this equation if no synthetic data is available
                                     continue
                             else:
                                 X_synth = X_synth_values["PySR"]
@@ -892,7 +762,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             
                             yhat_train_ext_pysr = gp_model.predict(X_synth, index=j)
                             
-                            # Check for NaN in predictions - skip this equation if found
                             equation_str = str(equation)
                             predictions_dict = {
                                 'train': yhat_train_pysr,
@@ -912,11 +781,10 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                     'fold': fold_idx,
                                     'equation_index': j,
                                     'equation': equation_str,
-                                    'nan_counts': invalid_counts  # Keep name for backward compatibility
+                                    'nan_counts': invalid_counts  # counts per split (name kept for downstream CSVs)
                                 })
-                                continue  # Skip this equation
+                                continue
 
-                            # Calculate metrics (with NaN filtering)
                             mse_train = mean_squared_error(y_train, yhat_train_pysr)
                             mse_val = mean_squared_error(y_val, yhat_val_pysr)
                             mse_test_int = mean_squared_error(y_test_interpolation, yhat_test_int_pysr)
@@ -938,20 +806,16 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                 jnp.array([sigma_val], dtype=jnp.float32))
                             mdl_val = evaluator.calculate_mdl(loglike_val, fim_val, [sigma_val], equation)
                             
-                            # PSM (PySR Score Metric) - read from PySR equations CSV file (score column)
-                            # Read score directly from gp_model.equations_ DataFrame
+                            # PySR `score` column when present
                             try:
                                 if 'score' in equations_df.columns:
                                     pysr_score = to_float(equations_df.iloc[j]['score'])
-                                    # Use the same score for validation variant
                                     pysr_score_val = pysr_score
                                 else:
-                                    # Fallback if score column doesn't exist
                                     pysr_score = np.nan
                                     pysr_score_val = np.nan
                                     print(f"WARNING: 'score' column not found in equations_df for equation {j}")
                             except (KeyError, IndexError, ValueError) as e:
-                                # Fallback if score cannot be read
                                 pysr_score = np.nan
                                 pysr_score_val = np.nan
                                 print(f"WARNING: Could not read score from equations_df for equation {j}: {type(e).__name__}: {str(e)}")
@@ -961,7 +825,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             rmse_test_int = np.sqrt(mse_test_int)
                             rmse_test_ext = np.sqrt(mse_test_ext)
                             
-                            # Compute extrapolation and sensitivity measures
                             extrap_div = evaluator.compute_extrapolation_divergence(yhat_train_pysr, yhat_train_ext_pysr)
                             sens_interp_sv = evaluator.compute_prediction_variance_sv(equation, X_train)
                             sens_extrap_sv = evaluator.compute_prediction_variance_sv(equation, X_synth)
@@ -1008,14 +871,12 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                 to_float(sens_interp_mv), to_float(sens_extrap_mv), to_float(extrap_div)
                             ])
 
-                        # save yhat_gpe for this run/fold
                         if yhat_gpe is not None:
                             yhat_gpe_df = pd.DataFrame(yhat_gpe, columns=["yhat_gpe"])
                             yhat_gpe_filename = os.path.join(output_dir, f"yhat_gpe_run_{run + 1}_fold_{fold_idx}.csv")
                             yhat_gpe_df.to_csv(yhat_gpe_filename, index=False)
                             print(f"Saved yhat_gpe values for Run {run + 1}, Fold {fold_idx} to {yhat_gpe_filename}")
 
-                        # Save PySR Pareto front equations for this run/fold
                         if "PySR" in models:
                             gp_model = models["PySR"]
                             equations_df = gp_model.equations_.copy()
@@ -1023,7 +884,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             equations_df['fold'] = fold_idx
                             equations_df['equation_index'] = range(len(equations_df))
                             
-                            # Add equation strings
                             equation_strings = []
                             for j in range(len(equations_df)):
                                 try:
@@ -1033,46 +893,50 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                     equation_strings.append("Error parsing equation")
                             equations_df['equation_string'] = equation_strings
                             
-                            # Save individual run/fold file
                             pysr_equations_filename = os.path.join(output_dir, f"pysr_equations_run_{run + 1}_fold_{fold_idx}.csv")
                             equations_df.to_csv(pysr_equations_filename, index=False)
                             print(f"Saved PySR Pareto front equations for Run {run + 1}, Fold {fold_idx} to {pysr_equations_filename}")
                             
-                            # Append to combined list
                             all_equations_list.append(equations_df)
 
                     end_time = time.time()
                     print("Fold runtime (s): ", end_time - start_time)
 
-                    # per-fold distribution plot only on last run
-                    if run == num_runs - 1:
-                        plt.figure(figsize=(10, 6))
-                        plt.scatter(X_train[:, 0], X_train[:, 1], c='red', label="Train (fold)", alpha=0.7)
-                        plt.scatter(X_val[:, 0], X_val[:, 1], c='blue', label="Val (fold)", alpha=0.7)
-                        plt.scatter(X_test_interpolation[:, 0], X_test_interpolation[:, 1], c='orange', label="Test Interpolation", alpha=0.7)
+                    if run == num_runs - 1:  # fold scatter: last repeat only
+                        ax.scatter(X_train[:, 0], X_train[:, 1], c='red', label="Train (fold)", alpha=0.7)
+                        ax.scatter(X_val[:, 0], X_val[:, 1], c='blue', label="Val (fold)", alpha=0.7)
+                        ax.scatter(X_test_interpolation[:, 0], X_test_interpolation[:, 1], c='orange', label="Test Interpolation", alpha=0.7)
                         if X_test_extrapolation is not None and X_test_extrapolation.shape[0] > 0:
-                            plt.scatter(X_test_extrapolation[:, 0], X_test_extrapolation[:, 1], c='green', label="Test Extrapolation", alpha=0.7)
+                            ax.scatter(X_test_extrapolation[:, 0], X_test_extrapolation[:, 1], c='green', label="Test Extrapolation", alpha=0.7)
                         if 'X_synth' in locals() and X_synth is not None and X_synth.shape[0] > 0:
-                            plt.scatter(X_synth[:, 0], X_synth[:, 1], c='purple', label="Synthetic", alpha=0.7)
-                        plt.xlabel(feature_names[0])
-                        plt.ylabel(feature_names[1])
-                        plt.title(f"Distribution | Fold {fold_idx}")
-                        plt.legend()
-                        plt.grid(True)
-                        plt.savefig(os.path.join(output_dir, f"plot_last_run_fold_{fold_idx}.png"))
-                        plt.savefig(os.path.join(output_dir, f"plot_last_run_fold_{fold_idx}.pdf"))
-                        plt.close()
+                            ax.scatter(
+                                X_synth[:, 0],
+                                X_synth[:, 1],
+                                c=SYNTHETIC_SCATTER_COLOR,
+                                label="Synthetic",
+                                alpha=0.85,
+                                s=28,
+                                edgecolors=SYNTHETIC_SCATTER_EDGECOLOR,
+                                linewidths=SYNTHETIC_SCATTER_EDGELW,
+                            )
+                        ax.set_xlabel(feature_names[0])
+                        ax.set_ylabel(feature_names[1])
+                        # last CV run: first two standardised features (KDE uses all dims in kde_analysis)
+                        ax.set_title(f"CV fold {fold_idx}: features 1–2")
+                        ax.legend(loc="best", fontsize=PAPER_LEGEND_FONTSIZE)
+                        ax.grid(True, alpha=0.3)
+                        fig.tight_layout()
+                        fig.savefig(os.path.join(output_dir, f"plot_last_run_fold_{fold_idx}.png"))
+                        fig.savefig(os.path.join(output_dir, f"plot_last_run_fold_{fold_idx}.pdf"))
+                        plt.close(fig)
                 
-                # Save results for this run after all folds complete
                 if any_fold:
                     save_run_results_cv(gp_results, model_selection_criteria, hybrid_scores_sv, hybrid_scores_mv,
                                        run + 1, output_dir)
                     print(f"Saved results for Run {run + 1} after all folds completed.")
                     
-                    # Save summary of skipped equations for this run
                     run_skipped = [eq for eq in skipped_equations if eq['run'] == run + 1]
                     if run_skipped:
-                        # Flatten nan_counts for CSV
                         skipped_rows = []
                         for eq in run_skipped:
                             row = {
@@ -1081,7 +945,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                 'equation_index': eq['equation_index'],
                                 'equation': eq['equation']
                             }
-                            # Add NaN counts per prediction type
                             for pred_type, count in eq['nan_counts'].items():
                                 row[f'nan_count_{pred_type}'] = count
                             skipped_rows.append(row)
@@ -1095,17 +958,19 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                 print(f"No inside/outside split found for bandwidth={bandwidth:.2f}. Skipping.")
 
         else:
-            # original MODE / non-CV
+            # non-CV branch
             num_features = None
             models = get_models()
             evaluator = ModelEvaluator()
+            plot_split_for_viz = None
+            plot_synth_for_viz = None
 
             # for run in range(num_runs):
             for run in range(start_run - 1, end_run):
                 start_time = time.time()
                 print(f"Run {run + 1}/{num_runs} - Bandwidth: {bandwidth:.3f}")
                 
-                # Use run as random_state to get different train/test splits for each run
+                # random_state = run: different split each repeat
                 data_split = split_data(bandwidth, feature_names, output_dir, random_state=run)
                 if data_split is None:
                     print(f"No split data for bandwidth={bandwidth:.2f} in run {run + 1}. Skipping.")
@@ -1114,6 +979,14 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                 (X_train, y_train,
                  X_test_interpolation, y_test_interpolation,
                  X_test_extrapolation, y_test_extrapolation) = data_split
+                plot_split_for_viz = (
+                    X_train,
+                    X_test_interpolation,
+                    X_test_extrapolation,
+                    y_train,
+                    y_test_interpolation,
+                    y_test_extrapolation,
+                )
                 
                 if num_features is None:
                     num_features = X_train.shape[1]
@@ -1124,7 +997,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                 for model_name, model in models.items():
                     model.set_params(random_state=run)
                     
-                    # Check for NaN before fitting
                     if np.any(np.isnan(X_train)):
                         print(f"\n[ERROR] NaN detected in X_train before fitting {model_name}")
                         print(f"  Shape: {X_train.shape}")
@@ -1133,7 +1005,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                         print(f"  Rows with NaN: {nan_rows}")
                         print(f"  Columns with NaN: {nan_cols}")
                         
-                        # Save NaN details to file
                         nan_csv_rows = []
                         for col_idx in nan_cols:
                             col_nan_rows = np.where(np.isnan(X_train[:, col_idx]))[0]
@@ -1162,7 +1033,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                         nan_indices = np.where(np.isnan(y_train))[0]
                         print(f"  NaN at indices: {nan_indices}")
                         
-                        # Save NaN details to file
                         nan_csv_rows = [{
                             'data_name': f'y_train_{model_name}_run{run+1}',
                             'row_index': int(idx),
@@ -1186,7 +1056,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                     yhat_test_int = model.predict(X_test_interpolation)
                     yhat_test_ext = model.predict(X_test_extrapolation) if X_test_extrapolation.shape[0] > 0 else np.array([])
 
-                    # distances & residuals
                     centroid = np.mean(X_train, axis=0)
                     train_distances = np.linalg.norm(X_train - centroid, axis=1)
                     test_interpolation_distances = np.linalg.norm(X_test_interpolation - centroid, axis=1)
@@ -1216,14 +1085,13 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                     plt.xlabel('Distance from Centroid', fontsize=16)
                     plt.ylabel('Absolute Residuals', fontsize=16)
                     plt.title(f'Residuals vs. Distance\nModel: {model_name}, Run: {run + 1}', fontsize=18)
-                    plt.legend(fontsize=12)
+                    plt.legend(fontsize=PAPER_LEGEND_FONTSIZE)
                     plt.grid(True)
                     plt.tight_layout()
                     plt.savefig(os.path.join(output_dir, f"Residuals_vs_Distance_{model_name}_Run{run + 1}.pdf"))
                     plt.savefig(os.path.join(output_dir, f"Residuals_vs_Distance_{model_name}_Run{run + 1}.png"))
                     plt.close()
 
-                    # synthetic generation from low-density training region
                     kde = KernelDensity(kernel='gaussian', bandwidth=bandwidth)
                     kde.fit(X_train)
                     log_scores = kde.score_samples(X_train)
@@ -1246,13 +1114,35 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                         X_synth_values[model_name] = np.array(X_synth)
                         y_synth_values[model_name] = np.array(y_synth)
                         
-                        if model_name == "PySR":  # Only print once
+                        if model_name == "PySR":
                             print(f"    Synthetic data: {len(X_synth_values[model_name])} samples generated (20% of train size)")
 
                         save_synthetic_data(
                             X_synth_values[model_name], y_synth_values[model_name], feature_names,
                             f"X_synth_{model_name.lower()}_{run + 1}.csv", output_dir
                         )
+
+                plot_synth_for_viz = None
+                if X_synth_values:
+                    if (
+                        "PySR" in X_synth_values
+                        and X_synth_values["PySR"] is not None
+                        and np.size(X_synth_values["PySR"]) > 0
+                    ):
+                        plot_synth_for_viz = (
+                            np.asarray(X_synth_values["PySR"]),
+                            np.asarray(y_synth_values["PySR"]),
+                            "PySR",
+                        )
+                    else:
+                        for _name, _xs in X_synth_values.items():
+                            if _xs is not None and np.size(_xs) > 0:
+                                plot_synth_for_viz = (
+                                    np.asarray(_xs),
+                                    np.asarray(y_synth_values[_name]),
+                                    str(_name),
+                                )
+                                break
 
                 # PySR per-equation metrics (TRAIN/INTERP/EXTRAP)
                 if "PySR" in models:
@@ -1268,7 +1158,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                         w, _ = evaluator.count_total_symbols(equation)
                         _, u = evaluator.count_distinct_symbols(equation)
 
-                        # predictions
                         yhat_train_pysr = gp_model.predict(X_train, index=j)
                         yhat_test_int_pysr = gp_model.predict(X_test_interpolation, index=j)
                         yhat_test_ext_pysr = (gp_model.predict(X_test_extrapolation, index=j)
@@ -1290,7 +1179,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
 
                         yhat_train_ext_pysr = gp_model.predict(X_synth, index=j)
                         
-                        # Check for NaN in predictions - skip this equation if found
                         equation_str = str(equation)
                         predictions_dict = {
                             'train': yhat_train_pysr,
@@ -1309,11 +1197,10 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                                 'fold': None,
                                 'equation_index': j,
                                 'equation': equation_str,
-                                'nan_counts': invalid_counts  # Keep name for backward compatibility
+                                'nan_counts': invalid_counts  # counts per split (name kept for downstream CSVs)
                             })
-                            continue  # Skip this equation
+                            continue
 
-                        # Calculate metrics (with NaN filtering)
                         mse_train = mean_squared_error(y_train, yhat_train_pysr)
                         mse_test_int = mean_squared_error(y_test_interpolation, yhat_test_int_pysr)
                         mse_test_ext = mean_squared_error(y_test_extrapolation, yhat_test_ext_pysr) if len(y_test_extrapolation) > 0 else np.nan
@@ -1327,21 +1214,17 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             jnp.array([sigma_train], dtype=jnp.float32))
                         mdl_train = evaluator.calculate_mdl(loglike_train, fim_train, [sigma_train], equation)
                         
-                        # PSM (PySR Score Metric) - read from PySR equations CSV file (score column)
-                        # Read score directly from gp_model.equations_ DataFrame
+                        # PySR `score` column when present
                         equations_df = gp_model.equations_
                         try:
                             if 'score' in equations_df.columns:
                                 pysr_score = to_float(equations_df.iloc[j]['score'])
-                                # Use the same score for extrapolation variant
                                 pysr_score_ext = pysr_score
                             else:
-                                # Fallback if score column doesn't exist
                                 pysr_score = np.nan
                                 pysr_score_ext = np.nan
                                 print(f"WARNING: 'score' column not found in equations_df for equation {j}")
                         except (KeyError, IndexError, ValueError) as e:
-                            # Fallback if score cannot be read
                             pysr_score = np.nan
                             pysr_score_ext = np.nan
                             print(f"WARNING: Could not read score from equations_df for equation {j}: {type(e).__name__}: {str(e)}")
@@ -1350,7 +1233,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                         rmse_test_int = np.sqrt(mse_test_int)
                         rmse_test_ext = np.sqrt(mse_test_ext)
                         
-                        # Compute extrapolation and sensitivity measures
                         extrap_div = evaluator.compute_extrapolation_divergence(yhat_train_pysr, yhat_train_ext_pysr)
                         sens_interp_sv = evaluator.compute_prediction_variance_sv(equation, X_train)
                         sens_extrap_sv = evaluator.compute_prediction_variance_sv(equation, X_synth)
@@ -1394,19 +1276,16 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             to_float(sens_interp_mv), to_float(sens_extrap_mv), to_float(extrap_div)
                         ])
 
-                    # Save yhat_gpe values into CSV file
                     if yhat_gpe is not None:
                         yhat_gpe_df = pd.DataFrame(yhat_gpe, columns=["yhat_gpe"])
                         yhat_gpe_filename = os.path.join(output_dir, f"yhat_gpe_run_{run + 1}.csv")
                         yhat_gpe_df.to_csv(yhat_gpe_filename, index=False)
                         print(f"Saved yhat_gpe values for Run {run + 1} to {yhat_gpe_filename}")
 
-                    # Save PySR Pareto front equations for this run
                     equations_df = gp_model.equations_.copy()
                     equations_df['run'] = run + 1
                     equations_df['equation_index'] = range(len(equations_df))
                     
-                    # Add equation strings
                     equation_strings = []
                     for j in range(len(equations_df)):
                         try:
@@ -1416,26 +1295,21 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             equation_strings.append("Error parsing equation")
                     equations_df['equation_string'] = equation_strings
                     
-                    # Save individual run file
                     pysr_equations_filename = os.path.join(output_dir, f"pysr_equations_run_{run + 1}.csv")
                     equations_df.to_csv(pysr_equations_filename, index=False)
                     print(f"Saved PySR Pareto front equations for Run {run + 1} to {pysr_equations_filename}")
                     
-                    # Append to combined list
                     all_equations_list.append(equations_df)
 
                 end_time = time.time()
                 print("ETA: ", end_time - start_time)
                 
-                # Save results for this run
                 save_run_results_noncv(gp_results, model_selection_criteria, hybrid_scores_sv, hybrid_scores_mv,
                                      run + 1, output_dir)
                 print(f"Saved results for Run {run + 1}.")
                 
-                # Save summary of skipped equations for this run
                 run_skipped = [eq for eq in skipped_equations if eq['run'] == run + 1]
                 if run_skipped:
-                    # Flatten nan_counts for CSV
                     skipped_rows = []
                     for eq in run_skipped:
                         row = {
@@ -1444,7 +1318,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                             'equation_index': eq['equation_index'],
                             'equation': eq['equation']
                         }
-                        # Add NaN counts per prediction type
                         for pred_type, count in eq['nan_counts'].items():
                             row[f'nan_count_{pred_type}'] = count
                         skipped_rows.append(row)
@@ -1454,22 +1327,140 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
                     skipped_df.to_csv(skipped_file, index=False)
                     print(f"  Skipped {len(run_skipped)} equations due to NaN predictions (saved to {skipped_file})")
 
-            # Distribution figure (last run)
-            plt.figure(figsize=(10, 6))
-            plt.scatter(X_train[:, 0], X_train[:, 1], c='red', label="Train Data", alpha=0.7)
-            plt.scatter(X_test_interpolation[:, 0], X_test_interpolation[:, 1], c='blue', label="Test Interpolation", alpha=0.7)
-            if X_test_extrapolation.shape[0] > 0:
-                plt.scatter(X_test_extrapolation[:, 0], X_test_extrapolation[:, 1], c='green', label="Test Extrapolation", alpha=0.7)
-            plt.xlabel(feature_names[0])
-            plt.ylabel(feature_names[1])
-            plt.title("Distribution Dataset")
-            plt.legend()
-            plt.grid(True)
-            plt.savefig(os.path.join(output_dir, f"plot_run_last.png"))
-            plt.savefig(os.path.join(output_dir, f"plot_run_last.pdf"))
-            plt.close()
+            # last split this bandwidth: train / interp test / extrap test in (x1,x2)
+            if plot_split_for_viz is not None:
+                X_tr, X_ti, X_te, y_tr, y_ti, y_te = plot_split_for_viz
+                y_tr = np.asarray(y_tr).ravel()
+                y_ti = np.asarray(y_ti).ravel()
+                y_te = np.asarray(y_te).ravel()
 
-        # SAVE RESULTS (per mode)
+                fig, ax = plt.subplots(figsize=(10, 6))
+                ax.scatter(X_tr[:, 0], X_tr[:, 1], c="red", label="Train", alpha=0.65, s=22, edgecolors="none")
+                ax.scatter(X_ti[:, 0], X_ti[:, 1], c="blue", label="Test interpolation", alpha=0.65, s=22, edgecolors="none")
+                if X_te.shape[0] > 0:
+                    ax.scatter(X_te[:, 0], X_te[:, 1], c="green", label="Test extrapolation", alpha=0.65, s=22, edgecolors="none")
+                ax.set_xlabel(feature_names[0])
+                ax.set_ylabel(feature_names[1])
+                # KDE hull is full-dimensional; this is just the first two coords
+                ax.set_title("Extrapolation benchmark: features 1–2")
+                ax.legend(loc="best", fontsize=PAPER_LEGEND_FONTSIZE)
+                ax.grid(True, alpha=0.3)
+                fig.tight_layout()
+                fig.savefig(os.path.join(output_dir, "plot_run_last.png"))
+                fig.savefig(os.path.join(output_dir, "plot_run_last.pdf"))
+                plt.close(fig)
+
+                fig2, ax2 = plt.subplots(figsize=(10, 6))
+                ax2.scatter(X_tr[:, 0], y_tr, c="red", label="Train", alpha=0.65, s=22, edgecolors="none")
+                ax2.scatter(X_ti[:, 0], y_ti, c="blue", label="Test interpolation", alpha=0.65, s=22, edgecolors="none")
+                if X_te.shape[0] > 0:
+                    ax2.scatter(X_te[:, 0], y_te, c="green", label="Test extrapolation", alpha=0.65, s=22, edgecolors="none")
+                ax2.set_xlabel(f"{feature_names[0]} (standardised)")
+                ax2.set_ylabel("target")
+                # y vs first feature, same colour coding as the scatter above
+                ax2.set_title(f"Target vs {feature_names[0]}")
+                ax2.legend(loc="best", fontsize=PAPER_LEGEND_FONTSIZE)
+                ax2.grid(True, alpha=0.3)
+                fig2.tight_layout()
+                fig2.savefig(os.path.join(output_dir, "plot_run_last_feature1_vs_target.png"))
+                fig2.savefig(os.path.join(output_dir, "plot_run_last_feature1_vs_target.pdf"))
+                plt.close(fig2)
+
+                if plot_synth_for_viz is not None:
+                    X_syn, y_syn, synth_model = plot_synth_for_viz
+                    y_syn = np.asarray(y_syn).ravel()
+                    syn_label = f"Synthetic ({synth_model})"
+
+                    fig3, ax3 = plt.subplots(figsize=(10, 6))
+                    ax3.scatter(X_tr[:, 0], X_tr[:, 1], c="red", label="Train", alpha=0.65, s=22, edgecolors="none")
+                    ax3.scatter(X_ti[:, 0], X_ti[:, 1], c="blue", label="Test interpolation", alpha=0.65, s=22, edgecolors="none")
+                    if X_te.shape[0] > 0:
+                        ax3.scatter(X_te[:, 0], X_te[:, 1], c="green", label="Test extrapolation", alpha=0.65, s=22, edgecolors="none")
+                    ax3.scatter(
+                        X_syn[:, 0],
+                        X_syn[:, 1],
+                        c=SYNTHETIC_SCATTER_COLOR,
+                        label=syn_label,
+                        alpha=0.85,
+                        s=24,
+                        edgecolors=SYNTHETIC_SCATTER_EDGECOLOR,
+                        linewidths=SYNTHETIC_SCATTER_EDGELW,
+                    )
+                    ax3.set_xlabel(feature_names[0])
+                    ax3.set_ylabel(feature_names[1])
+                    # synthetic X near sparse end of train KDE; y_hat from fitted model (visualisation)
+                    ax3.set_title("Benchmark split + synthetic")
+                    ax3.legend(loc="best", fontsize=PAPER_LEGEND_FONTSIZE)
+                    ax3.grid(True, alpha=0.3)
+                    fig3.tight_layout()
+                    fig3.savefig(os.path.join(output_dir, "plot_run_last_with_synthetic.png"))
+                    fig3.savefig(os.path.join(output_dir, "plot_run_last_with_synthetic.pdf"))
+                    plt.close(fig3)
+
+                    fig4, ax4 = plt.subplots(figsize=(10, 6))
+                    ax4.scatter(X_tr[:, 0], y_tr, c="red", label="Train", alpha=0.65, s=22, edgecolors="none")
+                    ax4.scatter(X_ti[:, 0], y_ti, c="blue", label="Test interpolation", alpha=0.65, s=22, edgecolors="none")
+                    if X_te.shape[0] > 0:
+                        ax4.scatter(X_te[:, 0], y_te, c="green", label="Test extrapolation", alpha=0.65, s=22, edgecolors="none")
+                    ax4.scatter(
+                        X_syn[:, 0],
+                        y_syn,
+                        c=SYNTHETIC_SCATTER_COLOR,
+                        label=syn_label,
+                        alpha=0.85,
+                        s=24,
+                        edgecolors=SYNTHETIC_SCATTER_EDGECOLOR,
+                        linewidths=SYNTHETIC_SCATTER_EDGELW,
+                    )
+                    ax4.set_xlabel(f"{feature_names[0]} (standardised)")
+                    ax4.set_ylabel("target")
+                    # synthetic ordinates are model predictions, not measured y
+                    ax4.set_title(f"Target vs {feature_names[0]} + synthetic")
+                    ax4.legend(loc="best", fontsize=PAPER_LEGEND_FONTSIZE)
+                    ax4.grid(True, alpha=0.3)
+                    fig4.tight_layout()
+                    fig4.savefig(
+                        os.path.join(output_dir, "plot_run_last_feature1_vs_target_with_synthetic.png")
+                    )
+                    fig4.savefig(
+                        os.path.join(output_dir, "plot_run_last_feature1_vs_target_with_synthetic.pdf")
+                    )
+                    plt.close(fig4)
+
+                    # train + synthetic inputs only (no held-out extrapolation cloud)
+                    fig5, ax5 = plt.subplots(figsize=(10, 6))
+                    ax5.scatter(
+                        X_tr[:, 0],
+                        X_tr[:, 1],
+                        c="red",
+                        label="Training data",
+                        alpha=0.7,
+                        s=26,
+                        edgecolors="none",
+                    )
+                    ax5.scatter(
+                        X_syn[:, 0],
+                        X_syn[:, 1],
+                        c=SYNTHETIC_SCATTER_COLOR,
+                        label="Synthetic inputs",
+                        alpha=0.85,
+                        s=26,
+                        edgecolors=SYNTHETIC_SCATTER_EDGECOLOR,
+                        linewidths=SYNTHETIC_SCATTER_EDGELW,
+                        marker="D",
+                    )
+                    ax5.set_xlabel(f"{feature_names[0]} (standardised)")
+                    ax5.set_ylabel(f"{feature_names[1]} (standardised)")
+                    # labelled train vs unlabelled synthetic X (stress-style sanity plot)
+                    ax5.set_title("Practitioner workflow: features 1–2")
+                    ax5.legend(loc="best", fontsize=PAPER_LEGEND_FONTSIZE)
+                    ax5.grid(True, alpha=0.3)
+                    fig5.tight_layout()
+                    fig5.savefig(os.path.join(output_dir, "plot_practitioner_workflow.png"))
+                    fig5.savefig(os.path.join(output_dir, "plot_practitioner_workflow.pdf"))
+                    plt.close(fig5)
+
+        # aggregate CSVs for this bandwidth
         if use_cv:
             gp_results_df = pd.DataFrame(gp_results, columns=[
                 "Run", "Fold", "Equation_Index",
@@ -1507,11 +1498,11 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
             hybrid_mv_df.to_csv(os.path.join(output_dir, "hybrid_model_scores_mv_cv.csv"), index=False)
             print("Saved: hybrid_model_scores_mv_cv.csv")
 
-            # Spearman correlation vs. Test MSE per run (averaged across folds)
+            # Spearman vs mean test MSE (CV: averaged over folds)
             metrics_to_compare = ["AIC_Train", "BIC_Train", "MDL_Train", "MSE_Train", "PSM_Train"]
             corr_rows = []
             for run, group in model_selection_df.groupby("Run"):
-                # Aggregate test MSE across all folds for each equation
+                # mean test MSE per equation across folds
                 equation_tests = group.groupby("Equation_Index")["MSE_Test_Interpolation"].mean()
                 equation_metrics = {metric: group.groupby("Equation_Index")[metric].mean() for metric in metrics_to_compare}
                 
@@ -1529,7 +1520,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
             pd.DataFrame(corr_rows).to_csv(os.path.join(output_dir, "spearman_correlations_vs_test_mse_cv.csv"), index=False)
             print("Saved: spearman_correlations_vs_test_mse_cv.csv")
             
-            # Save all equations from all runs in one file
             if all_equations_list:
                 all_equations_df = pd.concat(all_equations_list, ignore_index=True)
                 combined_equations_filename = os.path.join(output_dir, "pysr_equations_all_runs_cv.csv")
@@ -1573,7 +1563,7 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
             hybrid_mv_df.to_csv(os.path.join(output_dir, "hybrid_model_scores_mv.csv"), index=False)
             print("Saved: hybrid_model_scores_mv.csv")
 
-            # Spearman correlation vs. INTERP MSE per run
+            # Spearman vs interpolation test MSE (single split mode)
             metrics_to_compare = ["AIC_Train", "BIC_Train", "MDL_Train", "MSE_Train", "PSM_Train"]
             correlation_results = []
             for run, group in model_selection_df.groupby("Run"):
@@ -1591,7 +1581,6 @@ def evaluate_models(bandwidths, feature_names, output_dir, num_runs=2, use_cv=Tr
             pd.DataFrame(correlation_results).to_csv(os.path.join(output_dir, "spearman_correlations_vs_test_mse.csv"), index=False)
             print("Saved: spearman_correlations_vs_test_mse.csv")
             
-            # Save all equations from all runs in one file
             if all_equations_list:
                 all_equations_df = pd.concat(all_equations_list, ignore_index=True)
                 combined_equations_filename = os.path.join(output_dir, "pysr_equations_all_runs.csv")
