@@ -117,31 +117,6 @@ Edit the top of `main.py` to set:
 - `DATA_DIR` / `OUT_ROOT`, where data lives and where results go
 - `NUM_RUNS`, `BANDWIDTHS`, `USE_CV`, experimental settings
 
-Then:
-
-```bash
-python main.py
-python main.py --workers 4
-python main.py --workers 4 --start-run 10 --end-run 30  # resume from run 10
-```
-
-### Run hybrid analysis
-
-```bash
-cd hybrid_code
-
-# All steps
-python run_all_analyses.py /path/to/results --run-all-analyses
-
-# Essential steps only (scores + summary)
-python run_all_analyses.py /path/to/results
-
-# One dataset only
-python run_all_analyses.py /path/to/results --dataset 1096_FacultySalaries
-
-# More workers
-python run_all_analyses.py /path/to/results --run-all-analyses --num-workers 8
-```
 
 ---
 
@@ -157,7 +132,6 @@ python run_all_analyses.py /path/to/results --run-all-analyses --num-workers 8
 | `gp_model_selection_criteria.csv` | AIC, BIC, MDL, sensitivity, all metrics |
 | `hybrid_model_scores_sv.csv` | Hybrid scores using single-variable perturbation |
 | `hybrid_model_scores_mv.csv` | Hybrid scores using multi-variable perturbation |
-| `spearman_correlations_vs_test_mse.csv` | How well each criterion ranks models |
 | `pysr_equations_all_runs.csv` | Every equation found across all runs |
 
 **Hybrid analysis** (in `hybrid_results/`):
