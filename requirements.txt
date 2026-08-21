@@ -1,0 +1,21 @@
+# Python dependencies for the symbolic-regression experiment + analysis pipeline.
+# Versions below are the ones validated in the Cursor Cloud dev environment
+# (Python 3.12). See AGENTS.md ("Cursor Cloud specific instructions") for setup
+# notes. PySR pulls in juliacall/juliapkg, which install a private Julia + the
+# SymbolicRegression.jl backend on first `import pysr`.
+numpy==2.5.2
+pandas==3.0.5
+matplotlib==3.11.1
+seaborn==0.13.2
+scikit-learn==1.9.0
+scipy==1.18.0
+sympy==1.14.0
+jax==0.11.1
+jaxlib==0.11.1
+pysr==1.5.10
+
+# NOTE: m1_evaluation.py contains `from interval import interval, inf, imath`
+# (the unmaintained `pyinterval` package). Those symbols are never actually used
+# and `pyinterval`/`crlibm` do not build on Python >= 3.12, so it is intentionally
+# omitted here. The environment provides a tiny `interval` shim so the import
+# resolves (see AGENTS.md). Install real `pyinterval` only under Python <= 3.10.
